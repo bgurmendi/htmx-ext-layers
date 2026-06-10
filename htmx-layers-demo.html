@@ -112,6 +112,25 @@
                         🧙 Iniciar asistente
                     </button>
                 </div>
+
+                <div class="nested-example">
+                    <h3 style="color: #667eea; margin-bottom: 0.5rem">
+                        4️⃣ Reemplazar diálogo (hx-layer="replace")
+                    </h3>
+                    <p style="color: #666; margin-bottom: 1rem">
+                        Cierra el diálogo actual (sin opción de volver) y abre
+                        la respuesta en uno nuevo. Útil para terminar una
+                        confirmación o un asistente y mostrar a continuación
+                        un proceso en curso.
+                    </p>
+                    <button
+                        hx-get="/api/confirm-delete"
+                        hx-layer="new"
+                        style="background: #e74c3c"
+                    >
+                        🗑️ Eliminar proyecto
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -584,6 +603,71 @@
         <template url="/api/wizard-finish" delay="300">
             🧙 Asistente completado para
             <strong>${nombre || "—"}</strong>: "${comentarios || "—"}"
+        </template>
+
+        <template url="/api/confirm-delete" delay="200">
+            <div class="dialog-header">
+                <h3>⚠️ Confirmar eliminación</h3>
+                <button
+                    class="close-btn"
+                    onclick="this.closest('dialog').close()"
+                >
+                    ✕
+                </button>
+            </div>
+            <div style="color: #666">
+                <p>
+                    ¿Seguro que quieres eliminar el proyecto? Esta acción
+                    iniciará un proceso en segundo plano.
+                </p>
+
+                <div
+                    style="
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 1rem;
+                        margin-top: 1rem;
+                    "
+                >
+                    <button
+                        onclick="this.closest('dialog').close()"
+                        style="background: #95a5a6"
+                    >
+                        Cancelar
+                    </button>
+                    <button
+                        hx-post="/api/delete-process"
+                        hx-layer="replace"
+                        style="background: #e74c3c"
+                    >
+                        🗑️ Eliminar
+                    </button>
+                </div>
+            </div>
+        </template>
+
+        <template url="/api/delete-process" delay="300">
+            <div class="dialog-header">
+                <h3>⏳ Eliminando proyecto…</h3>
+                <button
+                    class="close-btn"
+                    onclick="this.closest('dialog').close()"
+                >
+                    ✕
+                </button>
+            </div>
+            <div style="color: #666">
+                <p>📄 Eliminando archivos…</p>
+                <p>🗄️ Liberando base de datos…</p>
+                <p>✅ Proceso completado.</p>
+
+                <button
+                    onclick="this.closest('dialog').close()"
+                    style="background: #27ae60; margin-top: 1rem"
+                >
+                    Cerrar
+                </button>
+            </div>
         </template>
     </body>
 </html>

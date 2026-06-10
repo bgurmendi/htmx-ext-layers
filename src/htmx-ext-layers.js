@@ -122,6 +122,33 @@ function beforeSwap(event) {
     return;
   }
 
+  if (mode === "replace") {
+    const previousLayer = currentLayer;
+    const returnTarget = previousLayer?._hxReturnTarget ?? event.detail.target;
+
+    const dialog = createLayer({ returnTarget });
+
+    console.debug("[layers] created replacement layer", dialog, {
+      previousLayer,
+    });
+
+    event.detail.target = getLayerContent(dialog);
+
+    console.debug("[layers] replace swap target:", event.detail.target);
+
+    dialog._hxCloseAfterSettle = false;
+
+    if (previousLayer) {
+      previousLayer.close();
+      console.debug("[layers] closed previous layer", previousLayer);
+    }
+
+    dialog.showModal();
+
+    console.debug("[layers] dialog.showModal() called, open =", dialog.open);
+    return;
+  }
+
   if (mode === "current") {
     const layer = currentLayer || getTopLayer();
     if (!layer) {
