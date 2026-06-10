@@ -185,7 +185,7 @@
                 >
                     <button
                         hx-post="/api/save-profile"
-                        hx-layer="close"
+                        hx-layer="current"
                         style="background: #27ae60"
                     >
                         💾 Guardar
@@ -201,7 +201,35 @@
         </template>
 
         <template url="/api/save-profile" delay="300">
-            ✅ Perfil guardado
+            <div class="dialog-header">
+                <h3>👤 Mi Perfil</h3>
+                <button
+                    class="close-btn"
+                    onclick="this.closest('dialog').close()"
+                >
+                    ✕
+                </button>
+            </div>
+            <div style="color: #666">
+                <label><strong>Nombre:</strong></label>
+                <input type="text" value="Juan García" disabled />
+
+                <label><strong>Email:</strong></label>
+                <input type="email" value="juan@example.com" disabled />
+
+                <label><strong>Ciudad:</strong></label>
+                <input type="text" value="Madrid" disabled />
+
+                <button
+                    hx-get="/api/edit-profile"
+                    hx-layer="current"
+                    style="margin-top: 1rem; background: #27ae60"
+                >
+                    ✏️ Editar
+                </button>
+            </div>
+
+            <div class="toast">✅ Perfil guardado</div>
         </template>
 
         <template url="/api/settings" delay="200">
@@ -248,7 +276,7 @@
                 </div>
                 <button
                     hx-post="/api/save-settings"
-                    hx-layer="close"
+                    hx-layer="current"
                     style="background: #27ae60; margin-top: 1rem"
                 >
                     💾 Guardar Configuración
@@ -257,7 +285,57 @@
         </template>
 
         <template url="/api/save-settings" delay="300">
-            ✅ Configuración guardada
+            <div class="dialog-header">
+                <h3>⚙️ Configuración</h3>
+                <button
+                    class="close-btn"
+                    onclick="this.closest('dialog').close()"
+                >
+                    ✕
+                </button>
+            </div>
+            <div style="color: #666">
+                <div style="margin-bottom: 1.5rem">
+                    <label
+                        style="display: flex; align-items: center; gap: 0.5rem"
+                    >
+                        <input type="checkbox" checked /> Notificaciones por
+                        email
+                    </label>
+                </div>
+                <div style="margin-bottom: 1.5rem">
+                    <label
+                        style="display: flex; align-items: center; gap: 0.5rem"
+                    >
+                        <input type="checkbox" checked /> Modo oscuro
+                    </label>
+                </div>
+                <div style="margin-bottom: 1.5rem">
+                    <label><strong>Idioma:</strong></label>
+                    <select
+                        style="
+                            width: 100%;
+                            padding: 0.75rem;
+                            border: 1px solid #ddd;
+                            border-radius: 6px;
+                            font-size: 1rem;
+                        "
+                    >
+                        <option selected>Español</option>
+                        <option>English</option>
+                        <option>Français</option>
+                    </select>
+                </div>
+                <button
+                    hx-post="/api/save-settings"
+                    hx-layer="current"
+                    style="background: #27ae60; margin-top: 1rem"
+                >
+                    💾 Guardar Configuración
+                </button>
+            </div>
+
+            <div class="toast">✅ Configuración guardada</div>
         </template>
 
         <template url="/api/list" delay="200">
