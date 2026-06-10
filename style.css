@@ -87,6 +87,11 @@ dialog::backdrop {
     animation: fadeIn 0.3s ease;
 }
 
+dialog[data-hx-layer]::backdrop {
+    background: transparent;
+    animation: none;
+}
+
 @keyframes slideIn {
     from {
         opacity: 0;
@@ -135,9 +140,19 @@ dialog[data-hx-layer].hx-layer-stacked {
     transform: translate(calc(-50% + 48px), calc(-50% - 48px)) scale(0.94);
 }
 
-/* A nested layer uses a lighter backdrop so its parent stays visible behind it */
-dialog[data-hx-layer].hx-layer-nested::backdrop {
-    background: rgba(0, 0, 0, 0.15);
+/* Single shared backdrop behind all layer dialogs, kept constant across
+   step/replace transitions instead of relying on each dialog's own
+   ::backdrop (which would fade in/out and cause flicker) */
+.hx-layers-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.hx-layers-backdrop.hx-layer-backdrop-visible {
+    opacity: 1;
 }
 
 .toast {

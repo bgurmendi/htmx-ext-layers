@@ -34,7 +34,10 @@ function onBackClick(event) {
   const previousStep = layer._hxPreviousStep;
   if (previousStep) {
     layer._hxPreviousStep = null;
-    slideOut(layer, "hx-layer-offset-right", () => layer.remove());
+    slideOut(layer, "hx-layer-offset-right", () => {
+      layer.remove();
+      cleanupSharedBackdrop();
+    });
     slideIn(previousStep, "hx-layer-offset-left");
     console.debug("[layers] went back to previous step", previousStep);
     return;
@@ -75,6 +78,51 @@ function slideIn(dialog, offsetClass) {
   requestAnimationFrame(() => {
     dialog.classList.remove(offsetClass);
   });
+}
+
+const SHARED_BACKDROP_ID = "hx-layers-backdrop";
+
+// Creates the shared backdrop div (if not already present) and fades it in.
+// Idempotent: if it's already there, leave it alone so stacking/chaining
+// more layers doesn't restart its animation.
+function ensureSharedBackdrop() {
+  let backdrop = document.getElementById(SHARED_BACKDROP_ID);
+  if (backdrop) return backdrop;
+
+  backdrop = document.createElement("div");
+  backdrop.id = SHARED_BACKDROP_ID;
+  backdrop.className = "hx-layers-backdrop";
+  document.body.appendChild(backdrop);
+
+  // Force a layout pass so the fade-in transition runs.
+  backdrop.getBoundingClientRect();
+
+  requestAnimationFrame(() => {
+    backdrop.classList.add("hx-layer-backdrop-visible");
+  });
+
+  return backdrop;
+}
+
+// Fades out and removes the shared backdrop, but only once no
+// layer dialogs remain open.
+function cleanupSharedBackdrop() {
+  if (document.querySelector("dialog[data-hx-layer][open]")) return;
+
+  const backdrop = document.getElementById(SHARED_BACKDROP_ID);
+  if (!backdrop) return;
+
+  backdrop.classList.remove("hx-layer-backdrop-visible");
+
+  let done = false;
+  const remove = () => {
+    if (done) return;
+    done = true;
+    backdrop.remove();
+  };
+
+  backdrop.addEventListener("transitionend", remove, { once: true });
+  setTimeout(remove, 300);
 }
 
 function beforeSwap(event) {
@@ -129,6 +177,7 @@ function beforeSwap(event) {
       dialog.classList.add("hx-layer-nested");
     }
 
+    ensureSharedBackdrop();
     dialog.showModal();
 
     console.debug("[layers] dialog.showModal() called, open =", dialog.open);
@@ -148,6 +197,8 @@ function beforeSwap(event) {
     console.debug("[layers] step swap target:", event.detail.target);
 
     dialog._hxCloseAfterSettle = false;
+
+    ensureSharedBackdrop();
 
     if (previousStep) {
       slideOut(previousStep, "hx-layer-offset-left", () => {
@@ -180,6 +231,8 @@ function beforeSwap(event) {
     console.debug("[layers] replace swap target:", event.detail.target);
 
     dialog._hxCloseAfterSettle = false;
+
+    ensureSharedBackdrop();
 
     if (previousLayer) {
       previousLayer.close();
@@ -288,6 +341,8 @@ function removeLayerChain(dialog) {
   if (previousStep) {
     removeLayerChain(previousStep);
   }
+
+  cleanupSharedBackdrop();
 }
 
 function unstackParent(parentLayer) {
