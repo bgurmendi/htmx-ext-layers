@@ -1,6 +1,10 @@
 console.debug("[layers] extension script loaded, registering with htmx");
 
 htmx.defineExtension("layers", {
+  init() {
+    document.addEventListener("click", onBackClick);
+  },
+
   onEvent(name, event) {
     console.debug("[layers] onEvent:", name, event);
 
@@ -14,8 +18,41 @@ htmx.defineExtension("layers", {
   },
 });
 
+function onBackClick(event) {
+  const elt = event.target.closest("[hx-layer-back]");
+  if (!elt) return;
+
+  const layer = getCurrentLayer(elt);
+  if (!layer) return;
+
+  if (elt.tagName === "A") {
+    event.preventDefault();
+  }
+
+  console.debug("[layers] hx-layer-back clicked", { elt, layer });
+
+  const previousStep = layer._hxPreviousStep;
+  if (previousStep) {
+    layer._hxPreviousStep = null;
+    layer.remove();
+    previousStep.showModal();
+    console.debug("[layers] went back to previous step", previousStep);
+    return;
+  }
+
+  layer.close();
+}
+
 function beforeSwap(event) {
   const { elt, xhr } = event.detail;
+
+  if (xhr._hxLayersHandled) {
+    console.debug("[layers] xhr already handled, ignoring re-dispatched beforeSwap", {
+      elt,
+    });
+    return;
+  }
+  xhr._hxLayersHandled = true;
 
   const currentLayer = getCurrentLayer(elt);
 
@@ -52,6 +89,32 @@ function beforeSwap(event) {
     console.debug("[layers] new swap target:", event.detail.target);
 
     dialog._hxCloseAfterSettle = false;
+
+    dialog.showModal();
+
+    console.debug("[layers] dialog.showModal() called, open =", dialog.open);
+    return;
+  }
+
+  if (mode === "step") {
+    const previousStep = currentLayer;
+    const returnTarget = previousStep?._hxReturnTarget ?? event.detail.target;
+
+    const dialog = createLayer({ returnTarget, previousStep });
+
+    console.debug("[layers] created step layer", dialog, { previousStep });
+
+    event.detail.target = getLayerContent(dialog);
+
+    console.debug("[layers] step swap target:", event.detail.target);
+
+    dialog._hxCloseAfterSettle = false;
+
+    if (previousStep) {
+      previousStep._hxStepHidden = true;
+      previousStep.close();
+      console.debug("[layers] hid previous step", previousStep);
+    }
 
     dialog.showModal();
 
@@ -96,7 +159,8 @@ function beforeSwap(event) {
 }
 
 function afterSettle(event) {
-  const { elt, xhr } = event.detail;
+  const { xhr } = event.detail;
+  const elt = event.detail.requestConfig?.elt ?? event.detail.elt;
 
   const mode =
     xhr?.getResponseHeader("HX-Layer") || elt?.getAttribute("hx-layer");
@@ -113,7 +177,7 @@ function afterSettle(event) {
   layer.close();
 }
 
-function createLayer({ returnTarget, parentLayer }) {
+function createLayer({ returnTarget, parentLayer, previousStep }) {
   const dialog = document.createElement("dialog");
 
   dialog.dataset.hxLayer = "";
@@ -121,10 +185,17 @@ function createLayer({ returnTarget, parentLayer }) {
 
   dialog._hxReturnTarget = returnTarget;
   dialog._hxParentLayer = parentLayer || null;
+  dialog._hxPreviousStep = previousStep || null;
 
   dialog.addEventListener("close", () => {
-    console.debug("[layers] dialog closed, removing from DOM", dialog);
-    dialog.remove();
+    if (dialog._hxStepHidden) {
+      dialog._hxStepHidden = false;
+      console.debug("[layers] dialog hidden for step transition", dialog);
+      return;
+    }
+
+    console.debug("[layers] dialog closed, removing layer chain", dialog);
+    removeLayerChain(dialog);
   });
 
   document.body.appendChild(dialog);
@@ -132,6 +203,16 @@ function createLayer({ returnTarget, parentLayer }) {
   console.debug("[layers] dialog appended to body", dialog);
 
   return dialog;
+}
+
+function removeLayerChain(dialog) {
+  const previousStep = dialog._hxPreviousStep;
+
+  dialog.remove();
+
+  if (previousStep) {
+    removeLayerChain(previousStep);
+  }
 }
 
 function resolveLayerTarget(event, layer) {

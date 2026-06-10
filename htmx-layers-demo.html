@@ -91,6 +91,27 @@
                         🔄 Actualizar capa actual
                     </button>
                 </div>
+
+                <div class="nested-example">
+                    <h3 style="color: #667eea; margin-bottom: 0.5rem">
+                        3️⃣ Asistente por pasos (hx-layer="step")
+                    </h3>
+                    <p style="color: #666; margin-bottom: 1rem">
+                        Cada paso reemplaza al anterior, que queda oculto (no
+                        destruido). Se puede volver atrás con
+                        <code>hx-layer-back</code> sin perder los datos
+                        introducidos, y al finalizar
+                        <code>hx-layer="close"</code> cierra y limpia toda la
+                        cadena de pasos.
+                    </p>
+                    <button
+                        hx-get="/api/wizard-step1"
+                        hx-layer="step"
+                        style="background: #f39c12"
+                    >
+                        🧙 Iniciar asistente
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -439,6 +460,130 @@
 
         <template url="/api/current-demo" delay="200">
             🔄 Capa actualizada a las ${new Date().toLocaleTimeString()}
+        </template>
+
+        <template url="/api/wizard-step1" delay="200">
+            <div class="dialog-header">
+                <h3>🧙 Paso 1 de 3: Datos básicos</h3>
+                <button
+                    class="close-btn"
+                    onclick="this.closest('dialog').close()"
+                >
+                    ✕
+                </button>
+            </div>
+            <div style="color: #666">
+                <label><strong>Nombre:</strong></label>
+                <input
+                    type="text"
+                    id="wizard-name"
+                    name="nombre"
+                    placeholder="Tu nombre"
+                />
+
+                <button
+                    hx-get="/api/wizard-step2"
+                    hx-layer="step"
+                    hx-include="#wizard-name"
+                    style="background: #27ae60; margin-top: 1rem"
+                >
+                    Siguiente →
+                </button>
+            </div>
+        </template>
+
+        <template url="/api/wizard-step2" delay="200">
+            <div class="dialog-header">
+                <h3>🧙 Paso 2 de 3: Detalles</h3>
+                <button
+                    class="close-btn"
+                    onclick="this.closest('dialog').close()"
+                >
+                    ✕
+                </button>
+            </div>
+            <div style="color: #666">
+                <p>Hola, <strong>${nombre || "—"}</strong>. Cuéntanos algo más:</p>
+
+                <label><strong>Comentarios:</strong></label>
+                <textarea
+                    id="wizard-comments"
+                    name="comentarios"
+                    rows="3"
+                    placeholder="Escribe aquí..."
+                ></textarea>
+
+                <div
+                    style="
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 1rem;
+                        margin-top: 1rem;
+                    "
+                >
+                    <button
+                        type="button"
+                        hx-layer-back
+                        style="background: #95a5a6"
+                    >
+                        ← Atrás
+                    </button>
+                    <button
+                        hx-get="/api/wizard-step3"
+                        hx-layer="step"
+                        hx-include="#wizard-name, #wizard-comments"
+                        style="background: #27ae60"
+                    >
+                        Siguiente →
+                    </button>
+                </div>
+            </div>
+        </template>
+
+        <template url="/api/wizard-step3" delay="200">
+            <div class="dialog-header">
+                <h3>🧙 Paso 3 de 3: Confirmar</h3>
+                <button
+                    class="close-btn"
+                    onclick="this.closest('dialog').close()"
+                >
+                    ✕
+                </button>
+            </div>
+            <div style="color: #666">
+                <p><strong>Nombre:</strong> ${nombre || "—"}</p>
+                <p><strong>Comentarios:</strong> ${comentarios || "—"}</p>
+
+                <div
+                    style="
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 1rem;
+                        margin-top: 1rem;
+                    "
+                >
+                    <button
+                        type="button"
+                        hx-layer-back
+                        style="background: #95a5a6"
+                    >
+                        ← Atrás
+                    </button>
+                    <button
+                        hx-post="/api/wizard-finish"
+                        hx-layer="close"
+                        hx-include="#wizard-name, #wizard-comments"
+                        style="background: #27ae60"
+                    >
+                        ✅ Finalizar
+                    </button>
+                </div>
+            </div>
+        </template>
+
+        <template url="/api/wizard-finish" delay="300">
+            🧙 Asistente completado para
+            <strong>${nombre || "—"}</strong>: "${comentarios || "—"}"
         </template>
     </body>
 </html>

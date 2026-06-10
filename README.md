@@ -8,8 +8,10 @@ An [htmx](https://htmx.org) extension that adds **stacked dialog layers** to you
 
 - **`hx-layer="new"`** — opens the response content in a new modal `<dialog>` layer, stacked on top of any existing layers.
 - **`hx-layer="current"`** — swaps content into the layer the triggering element belongs to (or the topmost open layer).
-- **`hx-layer="close"`** — swaps the response into the element that originally opened the layer, then closes the layer.
-- **`HX-Layer` response header** — lets the server decide the layer behavior (`new`, `current`, `close`, or `none`) instead of (or in addition to) the `hx-layer` attribute.
+- **`hx-layer="step"`** — opens the response content in a new layer, hiding the current one and chaining it as the previous step — ideal for multi-step wizards.
+- **`hx-layer-back`** — on any button or link inside a layer, discards the current step and reveals the previous one in the chain, with its state intact.
+- **`hx-layer="close"`** — swaps the response into the element that originally opened the layer chain, then closes the layer and removes any previous steps chained to it.
+- **`HX-Layer` response header** — lets the server decide the layer behavior (`new`, `current`, `close`, `step`, or `none`) instead of (or in addition to) the `hx-layer` attribute.
 - **`HX-Retarget` response header** — lets the server choose where inside the layer (or page) the response content is swapped.
 - **Nested layers** — layers can open further layers on top of themselves, forming a stack.
 
@@ -78,6 +80,35 @@ The response is swapped into the element that originally triggered `hx-layer="ne
 
 Any `hx-layer="new"` request triggered from inside a layer opens a new dialog stacked on top of the current one — useful for multi-step forms or wizards.
 
+### Multi-step wizards with `hx-layer="step"` and `hx-layer-back`
+
+Use `hx-layer="step"` instead of `hx-layer="new"` to build a wizard where each step replaces the previous one:
+
+```html
+<!-- Step 1 -->
+<button hx-get="/wizard/step-2" hx-layer="step">
+  Next →
+</button>
+```
+
+When the response arrives, the new step opens in its own `<dialog>` and the current one is hidden (not destroyed) and chained as its "previous step". From the new step, a plain client-side button can go back without any request:
+
+```html
+<!-- Step 2 -->
+<button type="button" hx-layer-back>← Back</button>
+```
+
+`hx-layer-back` discards the current step's dialog and re-shows the previous one, with all its form state preserved. On the final step, `hx-layer="close"` swaps its response into the element that opened step 1 and removes the entire chain of steps from the DOM:
+
+```html
+<!-- Step 3 (final) -->
+<button hx-post="/wizard/finish" hx-layer="close">
+  Finish
+</button>
+```
+
+Closing a step at any point — via `hx-layer="close"`, `onclick="this.closest('dialog').close()"`, or the Escape key — cleans up the whole chain of previous steps, not just the current dialog.
+
 ### Server-driven behavior
 
 Instead of (or in addition to) `hx-layer`, the server can respond with the `HX-Layer` header to control the swap behavior (`new`, `current`, `close`, or `none`), and with `HX-Retarget` to choose a CSS selector for where the content should be swapped within the layer or page.
@@ -104,6 +135,7 @@ The demo showcases:
 - Updating content within the currently open layer (`hx-layer="current"`)
 - Closing a layer and returning a result to the opener (`hx-layer="close"`)
 - Nested layers (a dialog opening another dialog on top of it)
+- A multi-step wizard with `hx-layer="step"` and `hx-layer-back`
 
 ## Browser support
 
