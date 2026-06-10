@@ -1,5 +1,9 @@
+console.debug("[layers] extension script loaded, registering with htmx");
+
 htmx.defineExtension("layers", {
   onEvent(name, event) {
+    console.debug("[layers] onEvent:", name, event);
+
     if (name === "htmx:beforeSwap") {
       beforeSwap(event);
     }
@@ -17,11 +21,23 @@ function beforeSwap(event) {
 
   let mode = xhr.getResponseHeader("HX-Layer") || elt.getAttribute("hx-layer");
 
+  console.debug("[layers] beforeSwap", {
+    elt,
+    headerMode: xhr.getResponseHeader("HX-Layer"),
+    attrMode: elt.getAttribute("hx-layer"),
+    currentLayer,
+  });
+
   if (!mode && currentLayer) {
     mode = "current";
   }
 
-  if (!mode || mode === "none") return;
+  if (!mode || mode === "none") {
+    console.debug("[layers] mode is empty or 'none', nothing to do");
+    return;
+  }
+
+  console.debug("[layers] resolved mode:", mode);
 
   if (mode === "new") {
     const parentLayer = currentLayer;
@@ -29,27 +45,43 @@ function beforeSwap(event) {
 
     const dialog = createLayer({ returnTarget, parentLayer });
 
+    console.debug("[layers] created dialog layer", dialog);
+
     event.detail.target = getLayerContent(dialog);
+
+    console.debug("[layers] new swap target:", event.detail.target);
+
     dialog._hxCloseAfterSettle = false;
 
     dialog.showModal();
+
+    console.debug("[layers] dialog.showModal() called, open =", dialog.open);
     return;
   }
 
   if (mode === "current") {
     const layer = currentLayer || getTopLayer();
-    if (!layer) return;
+    if (!layer) {
+      console.debug("[layers] mode 'current' but no layer found");
+      return;
+    }
 
     event.detail.target = resolveLayerTarget(event, layer);
+
+    console.debug("[layers] current swap target:", event.detail.target);
     return;
   }
 
   if (mode === "close") {
     const layer = currentLayer || getTopLayer();
-    if (!layer) return;
+    if (!layer) {
+      console.debug("[layers] mode 'close' but no layer found");
+      return;
+    }
 
     const returnTarget = layer._hxReturnTarget;
     if (!returnTarget) {
+      console.debug("[layers] no returnTarget, closing layer without swap");
       event.detail.shouldSwap = false;
       layer.close();
       return;
@@ -57,6 +89,8 @@ function beforeSwap(event) {
 
     event.detail.target = returnTarget;
     layer._hxCloseAfterSettle = true;
+
+    console.debug("[layers] close swap target:", returnTarget);
     return;
   }
 }
@@ -67,10 +101,14 @@ function afterSettle(event) {
   const mode =
     xhr?.getResponseHeader("HX-Layer") || elt?.getAttribute("hx-layer");
 
+  console.debug("[layers] afterSettle", { elt, mode });
+
   if (mode !== "close") return;
 
   const layer = getCurrentLayer(elt) || getTopLayer();
   if (!layer?._hxCloseAfterSettle) return;
+
+  console.debug("[layers] closing layer after settle", layer);
 
   layer.close();
 }
@@ -84,9 +122,14 @@ function createLayer({ returnTarget, parentLayer }) {
   dialog._hxReturnTarget = returnTarget;
   dialog._hxParentLayer = parentLayer || null;
 
-  dialog.addEventListener("close", () => dialog.remove());
+  dialog.addEventListener("close", () => {
+    console.debug("[layers] dialog closed, removing from DOM", dialog);
+    dialog.remove();
+  });
 
   document.body.appendChild(dialog);
+
+  console.debug("[layers] dialog appended to body", dialog);
 
   return dialog;
 }
