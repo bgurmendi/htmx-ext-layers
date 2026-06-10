@@ -285,6 +285,11 @@ function afterSettle(event) {
   const { xhr } = event.detail;
   const elt = event.detail.requestConfig?.elt ?? event.detail.elt;
 
+  // htmx may run its `.htmx-request` cleanup more than once (or not land on
+  // its internal requestCount === 0) when we reassign event.detail.target in
+  // beforeSwap, leaving the loading indicator stuck. Remove it ourselves.
+  elt?.classList.remove("htmx-request");
+
   const mode =
     xhr?.getResponseHeader("HX-Layer") || elt?.getAttribute("hx-layer");
 

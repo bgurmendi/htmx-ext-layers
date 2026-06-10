@@ -23,5 +23,8 @@
   },
   "bugs": {
     "url": "https://github.com/bgurmendi/htmx-ext-layers/issues"
+  },
+  "dependencies": {
+    "playwright": "^1.60.0"
   }
 }
