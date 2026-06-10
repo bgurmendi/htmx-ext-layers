@@ -66,6 +66,35 @@ button:active {
     transform: translateY(0);
 }
 
+/* Visual feedback while an htmx request triggered by this element is
+   in flight (htmx adds/removes this class automatically) */
+button.htmx-request,
+a.htmx-request {
+    opacity: 0.75;
+    cursor: wait;
+    pointer-events: none;
+}
+
+button.htmx-request::after,
+a.htmx-request::after {
+    content: "";
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    margin-left: 0.5rem;
+    vertical-align: -2px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: hx-spin 0.6s linear infinite;
+}
+
+@keyframes hx-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 dialog {
     border: none;
     border-radius: 12px;
