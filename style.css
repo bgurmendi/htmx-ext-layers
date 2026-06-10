@@ -107,6 +107,39 @@ dialog::backdrop {
     }
 }
 
+dialog[data-hx-layer] {
+    transition:
+        transform 0.25s ease,
+        opacity 0.25s ease;
+}
+
+/* A "step" dialog moves in/out by sliding instead of using slideIn */
+dialog[data-hx-layer].hx-layer-no-default-anim {
+    animation: none;
+}
+
+dialog[data-hx-layer].hx-layer-offset-right {
+    transform: translate(calc(-50% + 60px), -50%);
+    opacity: 0;
+}
+
+dialog[data-hx-layer].hx-layer-offset-left {
+    transform: translate(calc(-50% - 60px), -50%);
+    opacity: 0;
+}
+
+/* A layer that has a nested layer open on top of it peeks out behind it,
+   offset towards the top-right corner so it stays visible regardless of
+   how the two dialogs compare in size */
+dialog[data-hx-layer].hx-layer-stacked {
+    transform: translate(calc(-50% + 48px), calc(-50% - 48px)) scale(0.94);
+}
+
+/* A nested layer uses a lighter backdrop so its parent stays visible behind it */
+dialog[data-hx-layer].hx-layer-nested::backdrop {
+    background: rgba(0, 0, 0, 0.15);
+}
+
 .toast {
     position: absolute;
     top: 1rem;

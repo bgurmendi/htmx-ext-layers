@@ -34,13 +34,47 @@ function onBackClick(event) {
   const previousStep = layer._hxPreviousStep;
   if (previousStep) {
     layer._hxPreviousStep = null;
-    layer.remove();
-    previousStep.showModal();
+    slideOut(layer, "hx-layer-offset-right", () => layer.remove());
+    slideIn(previousStep, "hx-layer-offset-left");
     console.debug("[layers] went back to previous step", previousStep);
     return;
   }
 
   layer.close();
+}
+
+// Slides a dialog that is already open towards `offsetClass`, then calls
+// `onDone` once the transition finishes (used to remove/hide it afterwards).
+function slideOut(dialog, offsetClass, onDone) {
+  dialog.classList.add("hx-layer-no-default-anim", offsetClass);
+
+  let done = false;
+  const finish = () => {
+    if (done) return;
+    done = true;
+    onDone();
+  };
+
+  dialog.addEventListener("transitionend", finish, { once: true });
+  setTimeout(finish, 300);
+}
+
+// Shows (or reveals) a dialog by transitioning it in from `offsetClass`
+// towards its resting, centered position.
+function slideIn(dialog, offsetClass) {
+  dialog.classList.add("hx-layer-no-default-anim", offsetClass);
+
+  if (!dialog.open) {
+    dialog.showModal();
+  }
+
+  // Force a layout pass so the offset position is applied before we
+  // transition away from it.
+  dialog.getBoundingClientRect();
+
+  requestAnimationFrame(() => {
+    dialog.classList.remove(offsetClass);
+  });
 }
 
 function beforeSwap(event) {
@@ -90,6 +124,11 @@ function beforeSwap(event) {
 
     dialog._hxCloseAfterSettle = false;
 
+    if (parentLayer) {
+      parentLayer.classList.add("hx-layer-stacked");
+      dialog.classList.add("hx-layer-nested");
+    }
+
     dialog.showModal();
 
     console.debug("[layers] dialog.showModal() called, open =", dialog.open);
@@ -111,12 +150,16 @@ function beforeSwap(event) {
     dialog._hxCloseAfterSettle = false;
 
     if (previousStep) {
-      previousStep._hxStepHidden = true;
-      previousStep.close();
-      console.debug("[layers] hid previous step", previousStep);
-    }
+      slideOut(previousStep, "hx-layer-offset-left", () => {
+        previousStep._hxStepHidden = true;
+        previousStep.close();
+        console.debug("[layers] hid previous step", previousStep);
+      });
 
-    dialog.showModal();
+      slideIn(dialog, "hx-layer-offset-right");
+    } else {
+      dialog.showModal();
+    }
 
     console.debug("[layers] dialog.showModal() called, open =", dialog.open);
     return;
@@ -234,11 +277,26 @@ function createLayer({ returnTarget, parentLayer, previousStep }) {
 
 function removeLayerChain(dialog) {
   const previousStep = dialog._hxPreviousStep;
+  const parentLayer = dialog._hxParentLayer;
 
   dialog.remove();
 
+  if (parentLayer) {
+    unstackParent(parentLayer);
+  }
+
   if (previousStep) {
     removeLayerChain(previousStep);
+  }
+}
+
+function unstackParent(parentLayer) {
+  const stillHasChild = [
+    ...document.querySelectorAll("dialog[data-hx-layer][open]"),
+  ].some((d) => d._hxParentLayer === parentLayer);
+
+  if (!stillHasChild) {
+    parentLayer.classList.remove("hx-layer-stacked");
   }
 }
 
