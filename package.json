@@ -1,0 +1,27 @@
+{
+  "name": "htmx-ext-layers",
+  "version": "0.1.0",
+  "description": "An htmx extension that adds stacked dialog layers to your application.",
+  "main": "src/htmx-ext-layers.js",
+  "files": [
+    "src",
+    "LICENSE",
+    "README.md"
+  ],
+  "keywords": [
+    "htmx",
+    "htmx-extension",
+    "dialog",
+    "modal",
+    "layers"
+  ],
+  "license": "GPL-3.0",
+  "homepage": "https://github.com/bgurmendi/htmx-ext-layers#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bgurmendi/htmx-ext-layers.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bgurmendi/htmx-ext-layers/issues"
+  }
+}

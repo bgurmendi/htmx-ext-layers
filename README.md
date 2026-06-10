@@ -1,5 +1,7 @@
 # htmx-ext-layers
 
+[Repository](https://github.com/bgurmendi/htmx-ext-layers) · [Online demo](https://htmlpreview.github.io/?https://github.com/bgurmendi/htmx-ext-layers/blob/main/htmx-layers-demo.html)
+
 An [htmx](https://htmx.org) extension that adds **stacked dialog layers** to your application. Open content in a modal `<dialog>` "layer", stack layers on top of each other, update the current layer in place, or close a layer and swap its result back into the page that opened it — all driven declaratively from your HTML and/or server response headers.
 
 ## Features
@@ -21,7 +23,7 @@ Include htmx, then include the extension script after it, and enable it on the p
 
 ```html
 <script src="https://unpkg.com/htmx.org@1.9.10"></script>
-<script src="path/to/htmx-ext-layers.js"></script>
+<script src="https://unpkg.com/htmx-ext-layers/src/htmx-ext-layers.js"></script>
 
 <body hx-ext="layers">
   ...
@@ -83,6 +85,8 @@ Instead of (or in addition to) `hx-layer`, the server can respond with the `HX-L
 ## Demo
 
 A self-contained demo is included at [`htmx-layers-demo.html`](htmx-layers-demo.html). It uses [demo.htmx.org](https://demo.htmx.org) (loaded from [`vendor/demo.htmx.org.js`](vendor/demo.htmx.org.js)) to simulate server responses based on the `<template url="...">` blocks defined at the bottom of the page — no backend required.
+
+You can try it online directly from GitHub: https://htmlpreview.github.io/?https://github.com/bgurmendi/htmx-ext-layers/blob/main/htmx-layers-demo.html
 
 To run it locally:
 
