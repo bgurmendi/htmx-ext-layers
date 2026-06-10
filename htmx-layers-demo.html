@@ -4,218 +4,20 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>HTMX Layers Extension Demo</title>
-        <style>
-            * {
-                margin: 0;
-                padding: 0;
-                box-sizing: border-box;
-            }
-
-            body {
-                font-family:
-                    -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-                    sans-serif;
-                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-                min-height: 100vh;
-                padding: 2rem;
-            }
-
-            .container {
-                max-width: 800px;
-                margin: 0 auto;
-            }
-
-            .card {
-                background: white;
-                border-radius: 12px;
-                padding: 2rem;
-                box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-                margin-bottom: 1.5rem;
-            }
-
-            h1 {
-                color: white;
-                margin-bottom: 2rem;
-                text-align: center;
-            }
-
-            h2 {
-                color: #667eea;
-                margin-bottom: 1.5rem;
-                font-size: 1.5rem;
-            }
-
-            .button-group {
-                display: grid;
-                grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-                gap: 1rem;
-                margin-bottom: 1.5rem;
-            }
-
-            button {
-                background: #667eea;
-                color: white;
-                border: none;
-                padding: 0.75rem 1.5rem;
-                border-radius: 8px;
-                cursor: pointer;
-                font-size: 1rem;
-                transition: all 0.3s ease;
-                font-weight: 500;
-            }
-
-            button:hover {
-                background: #764ba2;
-                transform: translateY(-2px);
-                box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
-            }
-
-            button:active {
-                transform: translateY(0);
-            }
-
-            dialog {
-                border: none;
-                border-radius: 12px;
-                padding: 0;
-                box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-                animation: slideIn 0.3s ease;
-            }
-
-            dialog::backdrop {
-                background: rgba(0, 0, 0, 0.5);
-                animation: fadeIn 0.3s ease;
-            }
-
-            @keyframes slideIn {
-                from {
-                    opacity: 0;
-                    transform: translateY(-50px);
-                }
-                to {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-            }
-
-            @keyframes fadeIn {
-                from {
-                    opacity: 0;
-                }
-                to {
-                    opacity: 1;
-                }
-            }
-
-            [data-hx-layer-content] {
-                background: white;
-                padding: 2rem;
-                border-radius: 12px;
-            }
-
-            .dialog-header {
-                display: flex;
-                justify-content: space-between;
-                align-items: center;
-                margin-bottom: 1.5rem;
-                padding-bottom: 1rem;
-                border-bottom: 2px solid #f0f0f0;
-            }
-
-            .dialog-header h3 {
-                color: #333;
-                margin: 0;
-            }
-
-            .close-btn {
-                background: #f0f0f0;
-                color: #333;
-                border: none;
-                width: 36px;
-                height: 36px;
-                border-radius: 6px;
-                cursor: pointer;
-                font-size: 20px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                transition: all 0.3s ease;
-            }
-
-            .close-btn:hover {
-                background: #ddd;
-                color: #000;
-            }
-
-            .status {
-                background: #f5f5f5;
-                padding: 1rem;
-                border-radius: 8px;
-                margin-top: 1rem;
-                font-family: "Courier New", monospace;
-                font-size: 0.9rem;
-                color: #555;
-                border-left: 4px solid #667eea;
-            }
-
-            .success {
-                color: #27ae60;
-                border-left-color: #27ae60;
-            }
-
-            .info {
-                color: #667eea;
-                border-left-color: #667eea;
-            }
-
-            .note {
-                background: #fff9e6;
-                border-left: 4px solid #ffc107;
-                padding: 1rem;
-                border-radius: 8px;
-                margin-bottom: 1.5rem;
-                color: #856404;
-            }
-
-            .note strong {
-                color: #664d03;
-            }
-
-            input,
-            textarea {
-                width: 100%;
-                padding: 0.75rem;
-                margin: 0.5rem 0 1rem 0;
-                border: 1px solid #ddd;
-                border-radius: 6px;
-                font-family: inherit;
-                font-size: 1rem;
-            }
-
-            input:focus,
-            textarea:focus {
-                outline: none;
-                border-color: #667eea;
-                box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
-            }
-
-            .nested-example {
-                background: #f9f9f9;
-                padding: 1rem;
-                border-radius: 8px;
-                margin-top: 1rem;
-            }
-        </style>
+        <link rel="stylesheet" href="style.css" type="text/css" />
     </head>
-    <body>
+    <body hx-ext="layers">
         <div class="container">
             <h1>🎨 HTMX Layers Extension Demo</h1>
 
             <div class="card">
                 <div class="note">
-                    <strong>ℹ️ Nota:</strong> Este demo simula requests HTMX en
-                    cliente. En producción, estos requests irían a un servidor
-                    real que retorna HTML con headers como
+                    <strong>ℹ️ Nota:</strong> Este demo usa
+                    <code>demo.htmx.org</code> para simular respuestas del
+                    servidor a partir de los
+                    <code>&lt;template url="..."&gt;</code> definidos al final
+                    de la página. En producción, estos requests irían a un
+                    servidor real que puede además retornar headers como
                     <code>HX-Layer</code> y <code>HX-Retarget</code>.
                 </div>
 
@@ -285,6 +87,9 @@
                     >
                         (Abre primero un diálogo arriba, luego usa este botón)
                     </p>
+                    <button hx-get="/api/current-demo" hx-layer="current">
+                        🔄 Actualizar capa actual
+                    </button>
                 </div>
             </div>
         </div>
@@ -293,208 +98,24 @@
         <script src="https://unpkg.com/htmx.org@1.9.10"></script>
 
         <!-- Extensión Layers -->
-        <script src="htmx-ext-layers.js"></script>
+        <script src="src/htmx-ext-layers.js"></script>
 
-        <!-- Interceptor de requests para simular respuestas -->
+        <!-- Servidor de demo: responde con el contenido de los <template url="..."> -->
+        <script src="vendor/demo.htmx.org.js"></script>
+
+        <!-- Estado: muestra qué request está simulando htmx -->
         <script>
-            // Simulación mínima de requests - intercepta llamadas HTMX
-            document.body.addEventListener("htmx:configRequest", (event) => {
-                // Agrega header personalizado para simular server
-                event.detail.headers["X-Simulated"] = "true";
-            });
-
             document.body.addEventListener("htmx:beforeRequest", (event) => {
-                const url = event.detail.xhr.responseURL || event.detail.verb;
-                updateStatus(`Simulando request a: ${url}`);
+                updateStatus(
+                    `Simulando request a: ${event.detail.pathInfo.requestPath}`,
+                );
             });
 
-            // Simula respuestas del servidor
-            document.body.addEventListener("htmx:beforeSwap", (event) => {
-                const url = event.detail.xhr.responseURL;
-                const requestUrl = event.detail.requestConfig?.url || "";
-
-                if (requestUrl.includes("/api/profile")) {
-                    simulateResponse(
-                        event,
-                        `
-                    <div class="dialog-header">
-                        <h3>👤 Mi Perfil</h3>
-                        <button class="close-btn" onclick="this.closest('dialog').close()">✕</button>
-                    </div>
-                    <div style="color: #666;">
-                        <label><strong>Nombre:</strong></label>
-                        <input type="text" value="Juan García" disabled>
-
-                        <label><strong>Email:</strong></label>
-                        <input type="email" value="juan@example.com" disabled>
-
-                        <label><strong>Ciudad:</strong></label>
-                        <input type="text" value="Madrid" disabled>
-
-                        <button hx-get="/api/edit-profile"
-                                hx-layer="current"
-                                style="margin-top: 1rem; background: #27ae60;">
-                            ✏️ Editar
-                        </button>
-                    </div>
-                `,
-                        "new",
-                    );
-                }
-
-                if (requestUrl.includes("/api/edit-profile")) {
-                    simulateResponse(
-                        event,
-                        `
-                    <div class="dialog-header">
-                        <h3>✏️ Editar Perfil</h3>
-                        <button class="close-btn" onclick="this.closest('dialog').close()">✕</button>
-                    </div>
-                    <div style="color: #666;">
-                        <label><strong>Nombre:</strong></label>
-                        <input type="text" value="Juan García">
-
-                        <label><strong>Email:</strong></label>
-                        <input type="email" value="juan@example.com">
-
-                        <label><strong>Ciudad:</strong></label>
-                        <input type="text" value="Madrid">
-
-                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem;">
-                            <button hx-post="/api/save-profile"
-                                    hx-layer="close"
-                                    style="background: #27ae60;">
-                                💾 Guardar
-                            </button>
-                            <button onclick="this.closest('dialog').close()"
-                                    style="background: #e74c3c;">
-                                ❌ Cancelar
-                            </button>
-                        </div>
-                    </div>
-                `,
-                        "current",
-                    );
-                }
-
-                if (requestUrl.includes("/api/settings")) {
-                    simulateResponse(
-                        event,
-                        `
-                    <div class="dialog-header">
-                        <h3>⚙️ Configuración</h3>
-                        <button class="close-btn" onclick="this.closest('dialog').close()">✕</button>
-                    </div>
-                    <div style="color: #666;">
-                        <div style="margin-bottom: 1.5rem;">
-                            <label style="display: flex; align-items: center; gap: 0.5rem;">
-                                <input type="checkbox" checked> Notificaciones por email
-                            </label>
-                        </div>
-                        <div style="margin-bottom: 1.5rem;">
-                            <label style="display: flex; align-items: center; gap: 0.5rem;">
-                                <input type="checkbox" checked> Modo oscuro
-                            </label>
-                        </div>
-                        <div style="margin-bottom: 1.5rem;">
-                            <label><strong>Idioma:</strong></label>
-                            <select style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 6px; font-size: 1rem;">
-                                <option selected>Español</option>
-                                <option>English</option>
-                                <option>Français</option>
-                            </select>
-                        </div>
-                        <button hx-post="/api/save-settings"
-                                hx-layer="close"
-                                style="background: #27ae60; margin-top: 1rem;">
-                            💾 Guardar Configuración
-                        </button>
-                    </div>
-                `,
-                        "new",
-                    );
-                }
-
-                if (requestUrl.includes("/api/list")) {
-                    simulateResponse(
-                        event,
-                        `
-                    <div class="dialog-header">
-                        <h3>📝 Mi Lista</h3>
-                        <button class="close-btn" onclick="this.closest('dialog').close()">✕</button>
-                    </div>
-                    <div style="color: #666;">
-                        <div style="margin-bottom: 1rem; padding: 1rem; background: #f9f9f9; border-radius: 6px;">
-                            <input type="checkbox" checked> Aprender HTMX
-                        </div>
-                        <div style="margin-bottom: 1rem; padding: 1rem; background: #f9f9f9; border-radius: 6px;">
-                            <input type="checkbox" checked> Entender las capas
-                        </div>
-                        <div style="margin-bottom: 1rem; padding: 1rem; background: #f9f9f9; border-radius: 6px;">
-                            <input type="checkbox"> Implementar en proyecto
-                        </div>
-                        <input type="text" placeholder="Agregar nueva tarea...">
-                        <button style="background: #667eea; margin-top: 1rem;">➕ Agregar</button>
-                    </div>
-                `,
-                        "new",
-                    );
-                }
-
-                if (requestUrl.includes("/api/form1")) {
-                    simulateResponse(
-                        event,
-                        `
-                    <div class="dialog-header">
-                        <h3>📋 Formulario Principal</h3>
-                        <button class="close-btn" onclick="this.closest('dialog').close()">✕</button>
-                    </div>
-                    <div style="color: #666;">
-                        <label><strong>Proyecto:</strong></label>
-                        <input type="text" placeholder="Nombre del proyecto">
-
-                        <button hx-get="/api/form2"
-                                hx-layer="new"
-                                style="background: #27ae60; margin-top: 1rem;">
-                            📄 Siguiente Paso →
-                        </button>
-                    </div>
-                `,
-                        "new",
-                    );
-                }
-
-                if (requestUrl.includes("/api/form2")) {
-                    simulateResponse(
-                        event,
-                        `
-                    <div class="dialog-header">
-                        <h3>📄 Paso 2 (Anidado)</h3>
-                        <button class="close-btn" onclick="this.closest('dialog').close()">✕</button>
-                    </div>
-                    <div style="color: #666;">
-                        <p>Este diálogo está anidado dentro del anterior.</p>
-                        <label><strong>Descripción:</strong></label>
-                        <textarea placeholder="Descripción del proyecto..." rows="3"></textarea>
-
-                        <button onclick="this.closest('dialog').close()" style="background: #e74c3c; margin-top: 1rem;">
-                            ← Volver
-                        </button>
-                    </div>
-                `,
-                        "new",
-                    );
-                }
-
-                if (requestUrl.includes("/api/save")) {
-                    updateStatus("✅ Datos guardados exitosamente", "success");
+            document.body.addEventListener("htmx:afterRequest", (event) => {
+                if (event.detail.successful) {
+                    updateStatus("✅ Respuesta recibida", "success");
                 }
             });
-
-            function simulateResponse(event, htmlContent, responseHeader) {
-                event.detail.xhr.setResponseHeader("HX-Layer", responseHeader);
-                event.detail.xhr.responseText = htmlContent;
-            }
 
             function updateStatus(message, className = "info") {
                 const statusEl = document.getElementById("demo-status");
@@ -502,5 +123,244 @@
                 statusEl.className = `status ${className}`;
             }
         </script>
+
+        <!-- Respuestas simuladas para demo.htmx.org -->
+        <template url="/api/profile" delay="200">
+            <div class="dialog-header">
+                <h3>👤 Mi Perfil</h3>
+                <button
+                    class="close-btn"
+                    onclick="this.closest('dialog').close()"
+                >
+                    ✕
+                </button>
+            </div>
+            <div style="color: #666">
+                <label><strong>Nombre:</strong></label>
+                <input type="text" value="Juan García" disabled />
+
+                <label><strong>Email:</strong></label>
+                <input type="email" value="juan@example.com" disabled />
+
+                <label><strong>Ciudad:</strong></label>
+                <input type="text" value="Madrid" disabled />
+
+                <button
+                    hx-get="/api/edit-profile"
+                    hx-layer="current"
+                    style="margin-top: 1rem; background: #27ae60"
+                >
+                    ✏️ Editar
+                </button>
+            </div>
+        </template>
+
+        <template url="/api/edit-profile" delay="200">
+            <div class="dialog-header">
+                <h3>✏️ Editar Perfil</h3>
+                <button
+                    class="close-btn"
+                    onclick="this.closest('dialog').close()"
+                >
+                    ✕
+                </button>
+            </div>
+            <div style="color: #666">
+                <label><strong>Nombre:</strong></label>
+                <input type="text" value="Juan García" />
+
+                <label><strong>Email:</strong></label>
+                <input type="email" value="juan@example.com" />
+
+                <label><strong>Ciudad:</strong></label>
+                <input type="text" value="Madrid" />
+
+                <div
+                    style="
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 1rem;
+                        margin-top: 1rem;
+                    "
+                >
+                    <button
+                        hx-post="/api/save-profile"
+                        hx-layer="close"
+                        style="background: #27ae60"
+                    >
+                        💾 Guardar
+                    </button>
+                    <button
+                        onclick="this.closest('dialog').close()"
+                        style="background: #e74c3c"
+                    >
+                        ❌ Cancelar
+                    </button>
+                </div>
+            </div>
+        </template>
+
+        <template url="/api/save-profile" delay="300">
+            ✅ Perfil guardado
+        </template>
+
+        <template url="/api/settings" delay="200">
+            <div class="dialog-header">
+                <h3>⚙️ Configuración</h3>
+                <button
+                    class="close-btn"
+                    onclick="this.closest('dialog').close()"
+                >
+                    ✕
+                </button>
+            </div>
+            <div style="color: #666">
+                <div style="margin-bottom: 1.5rem">
+                    <label
+                        style="display: flex; align-items: center; gap: 0.5rem"
+                    >
+                        <input type="checkbox" checked /> Notificaciones por
+                        email
+                    </label>
+                </div>
+                <div style="margin-bottom: 1.5rem">
+                    <label
+                        style="display: flex; align-items: center; gap: 0.5rem"
+                    >
+                        <input type="checkbox" checked /> Modo oscuro
+                    </label>
+                </div>
+                <div style="margin-bottom: 1.5rem">
+                    <label><strong>Idioma:</strong></label>
+                    <select
+                        style="
+                            width: 100%;
+                            padding: 0.75rem;
+                            border: 1px solid #ddd;
+                            border-radius: 6px;
+                            font-size: 1rem;
+                        "
+                    >
+                        <option selected>Español</option>
+                        <option>English</option>
+                        <option>Français</option>
+                    </select>
+                </div>
+                <button
+                    hx-post="/api/save-settings"
+                    hx-layer="close"
+                    style="background: #27ae60; margin-top: 1rem"
+                >
+                    💾 Guardar Configuración
+                </button>
+            </div>
+        </template>
+
+        <template url="/api/save-settings" delay="300">
+            ✅ Configuración guardada
+        </template>
+
+        <template url="/api/list" delay="200">
+            <div class="dialog-header">
+                <h3>📝 Mi Lista</h3>
+                <button
+                    class="close-btn"
+                    onclick="this.closest('dialog').close()"
+                >
+                    ✕
+                </button>
+            </div>
+            <div style="color: #666">
+                <div
+                    style="
+                        margin-bottom: 1rem;
+                        padding: 1rem;
+                        background: #f9f9f9;
+                        border-radius: 6px;
+                    "
+                >
+                    <input type="checkbox" checked /> Aprender HTMX
+                </div>
+                <div
+                    style="
+                        margin-bottom: 1rem;
+                        padding: 1rem;
+                        background: #f9f9f9;
+                        border-radius: 6px;
+                    "
+                >
+                    <input type="checkbox" checked /> Entender las capas
+                </div>
+                <div
+                    style="
+                        margin-bottom: 1rem;
+                        padding: 1rem;
+                        background: #f9f9f9;
+                        border-radius: 6px;
+                    "
+                >
+                    <input type="checkbox" /> Implementar en proyecto
+                </div>
+                <input type="text" placeholder="Agregar nueva tarea..." />
+                <button style="background: #667eea; margin-top: 1rem">
+                    ➕ Agregar
+                </button>
+            </div>
+        </template>
+
+        <template url="/api/form1" delay="200">
+            <div class="dialog-header">
+                <h3>📋 Formulario Principal</h3>
+                <button
+                    class="close-btn"
+                    onclick="this.closest('dialog').close()"
+                >
+                    ✕
+                </button>
+            </div>
+            <div style="color: #666">
+                <label><strong>Proyecto:</strong></label>
+                <input type="text" placeholder="Nombre del proyecto" />
+
+                <button
+                    hx-get="/api/form2"
+                    hx-layer="new"
+                    style="background: #27ae60; margin-top: 1rem"
+                >
+                    📄 Siguiente Paso →
+                </button>
+            </div>
+        </template>
+
+        <template url="/api/form2" delay="200">
+            <div class="dialog-header">
+                <h3>📄 Paso 2 (Anidado)</h3>
+                <button
+                    class="close-btn"
+                    onclick="this.closest('dialog').close()"
+                >
+                    ✕
+                </button>
+            </div>
+            <div style="color: #666">
+                <p>Este diálogo está anidado dentro del anterior.</p>
+                <label><strong>Descripción:</strong></label>
+                <textarea
+                    placeholder="Descripción del proyecto..."
+                    rows="3"
+                ></textarea>
+
+                <button
+                    onclick="this.closest('dialog').close()"
+                    style="background: #e74c3c; margin-top: 1rem"
+                >
+                    ← Volver
+                </button>
+            </div>
+        </template>
+
+        <template url="/api/current-demo" delay="200">
+            🔄 Capa actualizada a las ${new Date().toLocaleTimeString()}
+        </template>
     </body>
 </html>
