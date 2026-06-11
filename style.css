@@ -309,3 +309,55 @@ textarea:focus {
     border-radius: 8px;
     margin-top: 1rem;
 }
+
+.crud-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.crud-table th,
+.crud-table td {
+    text-align: left;
+    padding: 0.75rem;
+    border-bottom: 1px solid #eee;
+}
+
+.crud-table thead th {
+    color: #667eea;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.row-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.btn-small {
+    padding: 0.4rem 0.75rem;
+    font-size: 0.85rem;
+}
+
+select {
+    width: 100%;
+    padding: 0.75rem;
+    margin: 0.5rem 0 1rem 0;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 1rem;
+}
+
+@keyframes rowFlash {
+    from {
+        background: #d4f5e0;
+    }
+    to {
+        background: transparent;
+    }
+}
+
+.row-flash {
+    animation: rowFlash 1.5s ease;
+}

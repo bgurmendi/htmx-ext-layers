@@ -132,6 +132,141 @@
                     </button>
                 </div>
             </div>
+
+            <div class="card">
+                <h2>🧾 CRUD Demo: Customers</h2>
+                <p style="color: #666; margin-bottom: 1rem">
+                    A customers table with row editing in a dialog and a
+                    per-row action that opens a multi-step wizard. All state
+                    lives in the page's HTML.
+                </p>
+
+                <div class="button-group" style="margin-bottom: 1rem">
+                    <button
+                        hx-get="/api/new-customer-step1"
+                        hx-layer="step"
+                        hx-target="#new-customer-anchor"
+                        style="background: #27ae60"
+                    >
+                        ➕ New customer
+                    </button>
+                </div>
+
+                <table class="crud-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Type</th>
+                            <th>Email</th>
+                            <th>Phone</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="customers-tbody">
+                        <tr
+                            data-id="1"
+                            data-tipo="person"
+                            data-nombre="Ana García"
+                            data-email="ana@example.com"
+                            data-telefono="600111222"
+                        >
+                            <td>1</td>
+                            <td>Ana García</td>
+                            <td>Person</td>
+                            <td>ana@example.com</td>
+                            <td>600111222</td>
+                            <td class="row-actions">
+                                <button
+                                    class="btn-small"
+                                    hx-get="/api/edit-customer"
+                                    hx-layer="new"
+                                    hx-target="closest tr"
+                                    hx-vals="js:{id: this.closest('tr').dataset.id, tipo: this.closest('tr').dataset.tipo, nombre: this.closest('tr').dataset.nombre, email: this.closest('tr').dataset.email, telefono: this.closest('tr').dataset.telefono}"
+                                >
+                                    ✏️ Edit
+                                </button>
+                                <button
+                                    class="btn-small"
+                                    style="background: #f39c12"
+                                    hx-get="/api/email-step1"
+                                    hx-layer="step"
+                                    hx-vals="js:{id: this.closest('tr').dataset.id, nombre: this.closest('tr').dataset.nombre, email: this.closest('tr').dataset.email}"
+                                >
+                                    ✉️ Send email
+                                </button>
+                            </td>
+                        </tr>
+                        <tr
+                            data-id="2"
+                            data-tipo="company"
+                            data-nombre="Acme Corp"
+                            data-email="contact@acme.com"
+                            data-telefono="912345678"
+                        >
+                            <td>2</td>
+                            <td>Acme Corp</td>
+                            <td>Company</td>
+                            <td>contact@acme.com</td>
+                            <td>912345678</td>
+                            <td class="row-actions">
+                                <button
+                                    class="btn-small"
+                                    hx-get="/api/edit-customer"
+                                    hx-layer="new"
+                                    hx-target="closest tr"
+                                    hx-vals="js:{id: this.closest('tr').dataset.id, tipo: this.closest('tr').dataset.tipo, nombre: this.closest('tr').dataset.nombre, email: this.closest('tr').dataset.email, telefono: this.closest('tr').dataset.telefono}"
+                                >
+                                    ✏️ Edit
+                                </button>
+                                <button
+                                    class="btn-small"
+                                    style="background: #f39c12"
+                                    hx-get="/api/email-step1"
+                                    hx-layer="step"
+                                    hx-vals="js:{id: this.closest('tr').dataset.id, nombre: this.closest('tr').dataset.nombre, email: this.closest('tr').dataset.email}"
+                                >
+                                    ✉️ Send email
+                                </button>
+                            </td>
+                        </tr>
+                        <tr
+                            data-id="3"
+                            data-tipo="person"
+                            data-nombre="Carlos Ruiz"
+                            data-email="carlos@example.com"
+                            data-telefono="611222333"
+                        >
+                            <td>3</td>
+                            <td>Carlos Ruiz</td>
+                            <td>Person</td>
+                            <td>carlos@example.com</td>
+                            <td>611222333</td>
+                            <td class="row-actions">
+                                <button
+                                    class="btn-small"
+                                    hx-get="/api/edit-customer"
+                                    hx-layer="new"
+                                    hx-target="closest tr"
+                                    hx-vals="js:{id: this.closest('tr').dataset.id, tipo: this.closest('tr').dataset.tipo, nombre: this.closest('tr').dataset.nombre, email: this.closest('tr').dataset.email, telefono: this.closest('tr').dataset.telefono}"
+                                >
+                                    ✏️ Edit
+                                </button>
+                                <button
+                                    class="btn-small"
+                                    style="background: #f39c12"
+                                    hx-get="/api/email-step1"
+                                    hx-layer="step"
+                                    hx-vals="js:{id: this.closest('tr').dataset.id, nombre: this.closest('tr').dataset.nombre, email: this.closest('tr').dataset.email}"
+                                >
+                                    ✉️ Send email
+                                </button>
+                            </td>
+                        </tr>
+                        <tr id="new-customer-anchor" style="display: none"></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- HTMX from CDN -->
@@ -668,6 +803,325 @@
                     Close
                 </button>
             </div>
+        </template>
+
+        <template url="/api/edit-customer" delay="200">
+            <div class="dialog-header">
+                <h3>✏️ Edit customer #${id}</h3>
+                <button
+                    class="close-btn"
+                    onclick="this.closest('dialog').close()"
+                >
+                    ✕
+                </button>
+            </div>
+            <div style="color: #666">
+                <input type="hidden" name="id" value="${id}" />
+                <input type="hidden" name="tipo" value="${tipo}" />
+
+                <label><strong>Name:</strong></label>
+                <input type="text" name="nombre" value="${nombre}" />
+
+                <label><strong>Email:</strong></label>
+                <input type="email" name="email" value="${email}" />
+
+                <label><strong>Phone:</strong></label>
+                <input type="text" name="telefono" value="${telefono}" />
+
+                <div
+                    style="
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 1rem;
+                        margin-top: 1rem;
+                    "
+                >
+                    <button
+                        hx-put="/api/save-customer"
+                        hx-layer="close"
+                        hx-swap="outerHTML"
+                        hx-include="closest [data-hx-layer-content]"
+                        style="background: #27ae60"
+                    >
+                        💾 Save
+                    </button>
+                    <button
+                        onclick="this.closest('dialog').close()"
+                        style="background: #e74c3c"
+                    >
+                        ❌ Cancel
+                    </button>
+                </div>
+            </div>
+        </template>
+
+        <template url="/api/save-customer" delay="300">
+            <tr
+                class="row-flash"
+                data-id="${id}"
+                data-tipo="${tipo}"
+                data-nombre="${nombre}"
+                data-email="${email}"
+                data-telefono="${telefono}"
+            >
+                <td>${id}</td>
+                <td>${nombre}</td>
+                <td>${tipo === 'company' ? 'Company' : 'Person'}</td>
+                <td>${email}</td>
+                <td>${telefono}</td>
+                <td class="row-actions">
+                    <button
+                        class="btn-small"
+                        hx-get="/api/edit-customer"
+                        hx-layer="new"
+                        hx-target="closest tr"
+                        hx-vals="js:{id: this.closest('tr').dataset.id, tipo: this.closest('tr').dataset.tipo, nombre: this.closest('tr').dataset.nombre, email: this.closest('tr').dataset.email, telefono: this.closest('tr').dataset.telefono}"
+                    >
+                        ✏️ Edit
+                    </button>
+                    <button
+                        class="btn-small"
+                        style="background: #f39c12"
+                        hx-get="/api/email-step1"
+                        hx-layer="step"
+                        hx-vals="js:{id: this.closest('tr').dataset.id, nombre: this.closest('tr').dataset.nombre, email: this.closest('tr').dataset.email}"
+                    >
+                        ✉️ Send email
+                    </button>
+                </td>
+            </tr>
+        </template>
+
+        <template url="/api/email-step1" delay="200">
+            <div class="dialog-header">
+                <h3>✉️ Send email — Step 1 of 3</h3>
+                <button
+                    class="close-btn"
+                    onclick="this.closest('dialog').close()"
+                >
+                    ✕
+                </button>
+            </div>
+            <div style="color: #666">
+                <p>
+                    Recipient: <strong>${nombre}</strong> (${email})
+                </p>
+
+                <input type="hidden" name="id" value="${id}" />
+                <input type="hidden" name="nombre" value="${nombre}" />
+                <input type="hidden" name="email" value="${email}" />
+
+                <label><strong>Template:</strong></label>
+                <select name="plantilla">
+                    <option value="welcome">Welcome</option>
+                    <option value="promo">Promotion</option>
+                    <option value="reminder">Payment reminder</option>
+                </select>
+
+                <button
+                    hx-get="/api/email-step2"
+                    hx-layer="step"
+                    hx-include="closest [data-hx-layer-content]"
+                    style="background: #27ae60; margin-top: 1rem"
+                >
+                    Next →
+                </button>
+            </div>
+        </template>
+
+        <template url="/api/email-step2" delay="200">
+            <div class="dialog-header">
+                <h3>✉️ Send email — Step 2 of 3</h3>
+                <button
+                    class="close-btn"
+                    onclick="this.closest('dialog').close()"
+                >
+                    ✕
+                </button>
+            </div>
+            <div style="color: #666">
+                <p>
+                    Template: <strong>${({welcome: 'Welcome', promo: 'Promotion', reminder: 'Payment reminder'})[plantilla] || plantilla}</strong>
+                </p>
+
+                <input type="hidden" name="id" value="${id}" />
+                <input type="hidden" name="nombre" value="${nombre}" />
+                <input type="hidden" name="email" value="${email}" />
+                <input type="hidden" name="plantilla" value="${plantilla}" />
+
+                <label><strong>Message:</strong></label>
+                <textarea name="texto" rows="5">${({
+                    welcome: 'Hi ' + nombre + ', welcome aboard! We are happy to have you with us.',
+                    promo: 'Hi ' + nombre + ', check out our latest promotion just for you!',
+                    reminder: 'Hi ' + nombre + ', this is a friendly reminder about your pending payment.'
+                })[plantilla] || ''}</textarea>
+
+                <div
+                    style="
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 1rem;
+                        margin-top: 1rem;
+                    "
+                >
+                    <button
+                        type="button"
+                        hx-layer-back
+                        style="background: #95a5a6"
+                    >
+                        ← Back
+                    </button>
+                    <button
+                        hx-post="/api/email-send"
+                        hx-layer="replace"
+                        hx-include="closest [data-hx-layer-content]"
+                        style="background: #27ae60"
+                    >
+                        📤 Send
+                    </button>
+                </div>
+            </div>
+        </template>
+
+        <template url="/api/email-send" delay="500">
+            <div class="dialog-header">
+                <h3>📤 Sending email…</h3>
+                <button
+                    class="close-btn"
+                    onclick="this.closest('dialog').close()"
+                >
+                    ✕
+                </button>
+            </div>
+            <div style="color: #666">
+                <p>📨 Connecting to mail server…</p>
+                <p>✉️ Sending to ${email}…</p>
+                <p>✅ Email sent to <strong>${nombre}</strong>.</p>
+
+                <button
+                    onclick="this.closest('dialog').close()"
+                    style="background: #27ae60; margin-top: 1rem"
+                >
+                    Close
+                </button>
+            </div>
+        </template>
+
+        <template url="/api/new-customer-step1" delay="200">
+            <div class="dialog-header">
+                <h3>➕ New customer — Step 1 of 2</h3>
+                <button
+                    class="close-btn"
+                    onclick="this.closest('dialog').close()"
+                >
+                    ✕
+                </button>
+            </div>
+            <div style="color: #666">
+                <label><strong>Customer type:</strong></label>
+                <select name="tipo" id="new-customer-tipo">
+                    <option value="person">Person</option>
+                    <option value="company">Company</option>
+                </select>
+
+                <button
+                    hx-get="/api/new-customer-step2"
+                    hx-layer="step"
+                    hx-include="#new-customer-tipo"
+                    style="background: #27ae60; margin-top: 1rem"
+                >
+                    Next →
+                </button>
+            </div>
+        </template>
+
+        <template url="/api/new-customer-step2" delay="200">
+            <div class="dialog-header">
+                <h3>➕ New customer — Step 2 of 2</h3>
+                <button
+                    class="close-btn"
+                    onclick="this.closest('dialog').close()"
+                >
+                    ✕
+                </button>
+            </div>
+            <div style="color: #666">
+                <input type="hidden" name="tipo" value="${tipo}" />
+
+                ${tipo === 'company'
+                    ? '<label><strong>Company name:</strong></label><input type="text" name="nombre" placeholder="Company name" />'
+                    : '<label><strong>Full name:</strong></label><input type="text" name="nombre" placeholder="Full name" />'}
+
+                <label><strong>Email:</strong></label>
+                <input type="email" name="email" placeholder="email@example.com" />
+
+                <label><strong>Phone:</strong></label>
+                <input type="text" name="telefono" placeholder="600111222" />
+
+                <div
+                    style="
+                        display: grid;
+                        grid-template-columns: 1fr 1fr;
+                        gap: 1rem;
+                        margin-top: 1rem;
+                    "
+                >
+                    <button
+                        type="button"
+                        hx-layer-back
+                        style="background: #95a5a6"
+                    >
+                        ← Back
+                    </button>
+                    <button
+                        hx-post="/api/new-customer-create"
+                        hx-layer="close"
+                        hx-swap="outerHTML"
+                        hx-include="closest [data-hx-layer-content]"
+                        style="background: #27ae60"
+                    >
+                        ✅ Accept
+                    </button>
+                </div>
+            </div>
+        </template>
+
+        <template url="/api/new-customer-create" delay="300">
+            <tr
+                class="row-flash"
+                data-id="${(window.__newCustomerId = Math.floor(Math.random() * 900) + 100)}"
+                data-tipo="${tipo}"
+                data-nombre="${nombre}"
+                data-email="${email}"
+                data-telefono="${telefono}"
+            >
+                <td>${window.__newCustomerId}</td>
+                <td>${nombre}</td>
+                <td>${tipo === 'company' ? 'Company' : 'Person'}</td>
+                <td>${email}</td>
+                <td>${telefono}</td>
+                <td class="row-actions">
+                    <button
+                        class="btn-small"
+                        hx-get="/api/edit-customer"
+                        hx-layer="new"
+                        hx-target="closest tr"
+                        hx-vals="js:{id: this.closest('tr').dataset.id, tipo: this.closest('tr').dataset.tipo, nombre: this.closest('tr').dataset.nombre, email: this.closest('tr').dataset.email, telefono: this.closest('tr').dataset.telefono}"
+                    >
+                        ✏️ Edit
+                    </button>
+                    <button
+                        class="btn-small"
+                        style="background: #f39c12"
+                        hx-get="/api/email-step1"
+                        hx-layer="step"
+                        hx-vals="js:{id: this.closest('tr').dataset.id, nombre: this.closest('tr').dataset.nombre, email: this.closest('tr').dataset.email}"
+                    >
+                        ✉️ Send email
+                    </button>
+                </td>
+            </tr>
+            <tr id="new-customer-anchor" style="display: none"></tr>
         </template>
     </body>
 </html>
