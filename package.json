@@ -1,6 +1,6 @@
 {
   "name": "htmx-ext-layers",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "An htmx extension that adds stacked dialog layers to your application.",
   "main": "src/htmx-ext-layers.js",
   "files": [
