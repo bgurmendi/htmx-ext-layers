@@ -126,7 +126,8 @@ function cleanupSharedBackdrop() {
 }
 
 function beforeSwap(event) {
-  const { elt, xhr } = event.detail;
+  const { xhr } = event.detail;
+  const elt = event.detail.requestConfig?.elt ?? event.detail.elt;
 
   if (xhr._hxLayersHandled) {
     console.debug("[layers] xhr already handled, ignoring re-dispatched beforeSwap", {

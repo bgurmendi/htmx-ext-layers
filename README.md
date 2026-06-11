@@ -1,6 +1,6 @@
 # htmx-ext-layers
 
-[Repository](https://github.com/bgurmendi/htmx-ext-layers) · [Online demo](https://bgurmendi.github.io/htmx-ext-layers/htmx-layers-demo.html)
+[Repository](https://github.com/bgurmendi/htmx-ext-layers) · [Online demo](https://bgurmendi.github.io/htmx-ext-layers/htmx-layers-showcase.html) . [Online CRUD App](https://bgurmendi.github.io/htmx-ext-layers/htmx-layers-crud-demo.html)
 
 An [htmx](https://htmx.org) extension that adds **stacked dialog layers** to your application. Open content in a modal `<dialog>` "layer", stack layers on top of each other, update the current layer in place, or close a layer and swap its result back into the page that opened it — all driven declaratively from your HTML and/or server response headers.
 
@@ -130,13 +130,11 @@ The current dialog (and its chain of previous steps, if any) is closed and remov
 
 Instead of (or in addition to) `hx-layer`, the server can respond with the `HX-Layer` header to control the swap behavior (`new`, `current`, `close`, or `none`), and with `HX-Retarget` to choose a CSS selector for where the content should be swapped within the layer or page.
 
-## Demo
+## Demos
 
-A self-contained demo is included at [`htmx-layers-demo.html`](htmx-layers-demo.html). It uses [demo.htmx.org](https://demo.htmx.org) (loaded from [`vendor/demo.htmx.org.js`](vendor/demo.htmx.org.js)) to simulate server responses based on the `<template url="...">` blocks defined at the bottom of the page — no backend required.
+Two self-contained demos are included. Both use [demo.htmx.org](https://demo.htmx.org) (loaded from [`vendor/demo.htmx.org.js`](vendor/demo.htmx.org.js)) to simulate server responses based on the `<template url="...">` blocks defined at the bottom of each page — no backend required.
 
-You can try it online directly from GitHub: https://htmlpreview.github.io/?https://github.com/bgurmendi/htmx-ext-layers/blob/main/htmx-layers-demo.html
-
-To run it locally:
+To run either locally:
 
 1. Serve the repository root with any static file server, for example:
    ```bash
@@ -144,9 +142,13 @@ To run it locally:
    # or
    python3 -m http.server
    ```
-2. Open `http://localhost:<port>/htmx-layers-demo.html` in your browser.
+2. Open `http://localhost:<port>/<file>.html` in your browser (see below for each demo's file name).
 
-The demo showcases:
+### Feature showcase
+
+[`htmx-layers-showcase.html`](htmx-layers-showcase.html) — try it online: https://htmlpreview.github.io/?https://github.com/bgurmendi/htmx-ext-layers/blob/main/htmx-layers-showcase.html
+
+This demo showcases:
 
 - Opening dialogs in new layers (`hx-layer="new"`)
 - Updating content within the currently open layer (`hx-layer="current"`)
@@ -154,6 +156,16 @@ The demo showcases:
 - Nested layers (a dialog opening another dialog on top of it)
 - A multi-step wizard with `hx-layer="step"` and `hx-layer-back`
 - Replacing a confirmation dialog with a follow-up one (`hx-layer="replace"`)
+
+### CRUD demo
+
+[`htmx-layers-crud-demo.html`](htmx-layers-crud-demo.html) — try it online: https://htmlpreview.github.io/?https://github.com/bgurmendi/htmx-ext-layers/blob/main/htmx-layers-crud-demo.html
+
+A more applied example: a customers table where rows are edited in a dialog (`hx-layer="new"` + `hx-layer="close"`, targeting the row itself), and per-row actions open multi-step wizards built with `hx-layer="step"`, `hx-layer-back`, and `hx-layer="replace"`. This demo shows:
+
+- Editing a table row in a dialog and updating it in place on save
+- A "Send email" wizard (pick a template → edit the message → send, with a progress/confirmation step)
+- A "New customer" wizard (pick Person/Company → fill in details → insert the new row into the table)
 
 ## Browser support
 
