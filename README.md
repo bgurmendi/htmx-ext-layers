@@ -146,7 +146,7 @@ To run either locally:
 
 ### Feature showcase
 
-[`htmx-layers-showcase.html`](htmx-layers-showcase.html) — try it online: https://htmlpreview.github.io/?https://github.com/bgurmendi/htmx-ext-layers/blob/main/htmx-layers-showcase.html
+[`htmx-layers-showcase.html`](htmx-layers-showcase.html) — try it online: https://bgurmendi.github.io/htmx-ext-layers/htmx-layers-showcase.html
 
 This demo showcases:
 
@@ -159,7 +159,7 @@ This demo showcases:
 
 ### CRUD demo
 
-[`htmx-layers-crud-demo.html`](htmx-layers-crud-demo.html) — try it online: https://htmlpreview.github.io/?https://github.com/bgurmendi/htmx-ext-layers/blob/main/htmx-layers-crud-demo.html
+[`htmx-layers-crud-demo.html`](htmx-layers-crud-demo.html) — try it online: https://bgurmendi.github.io/htmx-ext-layers/htmx-layers-crud-demo.html
 
 A more applied example: a customers table where rows are edited in a dialog (`hx-layer="new"` + `hx-layer="close"`, targeting the row itself), and per-row actions open multi-step wizards built with `hx-layer="step"`, `hx-layer-back`, and `hx-layer="replace"`. This demo shows:
 
