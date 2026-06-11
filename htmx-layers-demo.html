@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="es">
+<html lang="en">
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -12,16 +12,16 @@
 
             <div class="card">
                 <div class="note">
-                    <strong>ℹ️ Nota:</strong> Este demo usa
-                    <code>demo.htmx.org</code> para simular respuestas del
-                    servidor a partir de los
-                    <code>&lt;template url="..."&gt;</code> definidos al final
-                    de la página. En producción, estos requests irían a un
-                    servidor real que puede además retornar headers como
-                    <code>HX-Layer</code> y <code>HX-Retarget</code>.
+                    <strong>ℹ️ Note:</strong> This demo uses
+                    <code>demo.htmx.org</code> to simulate server responses
+                    based on the
+                    <code>&lt;template url="..."&gt;</code> elements defined
+                    at the end of the page. In production, these requests
+                    would go to a real server that can also return headers
+                    such as <code>HX-Layer</code> and <code>HX-Retarget</code>.
                 </div>
 
-                <h2>Ejemplos de Uso</h2>
+                <h2>Usage Examples</h2>
 
                 <div class="button-group">
                     <button
@@ -29,54 +29,54 @@
                         hx-layer="new"
                         hx-trigger="click"
                     >
-                        📋 Abrir Perfil (Nueva Capa)
+                        📋 Open Profile (New Layer)
                     </button>
                     <button
                         hx-get="/api/settings"
                         hx-layer="new"
                         hx-trigger="click"
                     >
-                        ⚙️ Abrir Configuración
+                        ⚙️ Open Settings
                     </button>
                     <button
                         hx-get="/api/list"
                         hx-layer="new"
                         hx-trigger="click"
                     >
-                        📝 Abrir Lista
+                        📝 Open List
                     </button>
                 </div>
 
                 <div class="status info" id="demo-status">
-                    Estado: Listo para interactuar
+                    Status: Ready to interact
                 </div>
             </div>
 
             <div class="card">
-                <h2>Casos de Uso</h2>
+                <h2>Use Cases</h2>
 
                 <div class="nested-example">
                     <h3 style="color: #667eea; margin-bottom: 0.5rem">
-                        1️⃣ Capas Anidadas
+                        1️⃣ Nested Layers
                     </h3>
                     <p style="color: #666; margin-bottom: 1rem">
-                        Abre un diálogo dentro de otro diálogo
+                        Opens a dialog inside another dialog
                     </p>
                     <button
                         hx-get="/api/form1"
                         hx-layer="new"
                         style="background: #27ae60"
                     >
-                        Formulario Principal
+                        Main Form
                     </button>
                 </div>
 
                 <div class="nested-example">
                     <h3 style="color: #667eea; margin-bottom: 0.5rem">
-                        2️⃣ Modo Current
+                        2️⃣ Current Mode
                     </h3>
                     <p style="color: #666; margin-bottom: 1rem">
-                        Actualiza contenido dentro de la capa actual
+                        Updates content within the current layer
                     </p>
                     <p
                         style="
@@ -85,75 +85,75 @@
                             margin-bottom: 0.5rem;
                         "
                     >
-                        (Abre primero un diálogo arriba, luego usa este botón)
+                        (Open a dialog above first, then use this button)
                     </p>
                     <button hx-get="/api/current-demo" hx-layer="current">
-                        🔄 Actualizar capa actual
+                        🔄 Update current layer
                     </button>
                 </div>
 
                 <div class="nested-example">
                     <h3 style="color: #667eea; margin-bottom: 0.5rem">
-                        3️⃣ Asistente por pasos (hx-layer="step")
+                        3️⃣ Step Wizard (hx-layer="step")
                     </h3>
                     <p style="color: #666; margin-bottom: 1rem">
-                        Cada paso reemplaza al anterior, que queda oculto (no
-                        destruido). Se puede volver atrás con
-                        <code>hx-layer-back</code> sin perder los datos
-                        introducidos, y al finalizar
-                        <code>hx-layer="close"</code> cierra y limpia toda la
-                        cadena de pasos.
+                        Each step replaces the previous one, which stays
+                        hidden (not destroyed). You can go back with
+                        <code>hx-layer-back</code> without losing the entered
+                        data, and at the end
+                        <code>hx-layer="close"</code> closes and clears the
+                        whole step chain.
                     </p>
                     <button
                         hx-get="/api/wizard-step1"
                         hx-layer="step"
                         style="background: #f39c12"
                     >
-                        🧙 Iniciar asistente
+                        🧙 Start wizard
                     </button>
                 </div>
 
                 <div class="nested-example">
                     <h3 style="color: #667eea; margin-bottom: 0.5rem">
-                        4️⃣ Reemplazar diálogo (hx-layer="replace")
+                        4️⃣ Replace Dialog (hx-layer="replace")
                     </h3>
                     <p style="color: #666; margin-bottom: 1rem">
-                        Cierra el diálogo actual (sin opción de volver) y abre
-                        la respuesta en uno nuevo. Útil para terminar una
-                        confirmación o un asistente y mostrar a continuación
-                        un proceso en curso.
+                        Closes the current dialog (with no way back) and opens
+                        the response in a new one. Useful for finishing a
+                        confirmation or wizard and then showing an ongoing
+                        process.
                     </p>
                     <button
                         hx-get="/api/confirm-delete"
                         hx-layer="new"
                         style="background: #e74c3c"
                     >
-                        🗑️ Eliminar proyecto
+                        🗑️ Delete project
                     </button>
                 </div>
             </div>
         </div>
 
-        <!-- HTMX desde CDN -->
+        <!-- HTMX from CDN -->
         <script src="https://unpkg.com/htmx.org@2.0.10"></script>
 
-        <!-- Extensión Layers -->
+        <!-- Layers Extension -->
         <script src="src/htmx-ext-layers.js"></script>
 
-        <!-- Servidor de demo: responde con el contenido de los <template url="..."> -->
+        <!-- Demo server: responds with the content of the <template url="..."> elements -->
         <script src="vendor/demo.htmx.org.js"></script>
 
-        <!-- Estado: muestra qué request está simulando htmx -->
+        <!-- Status: shows which request htmx is simulating -->
         <script>
             document.body.addEventListener("htmx:beforeRequest", (event) => {
                 updateStatus(
-                    `Simulando request a: ${event.detail.pathInfo.requestPath}`,
+                    `Simulating request to: ${event.detail.pathInfo.requestPath}`,
                 );
             });
 
             document.body.addEventListener("htmx:afterRequest", (event) => {
                 if (event.detail.successful) {
-                    updateStatus("✅ Respuesta recibida", "success");
+                    updateStatus("✅ Response received", "success");
                 }
             });
 
@@ -164,10 +164,10 @@
             }
         </script>
 
-        <!-- Respuestas simuladas para demo.htmx.org -->
+        <!-- Simulated responses for demo.htmx.org -->
         <template url="/api/profile" delay="200">
             <div class="dialog-header">
-                <h3>👤 Mi Perfil</h3>
+                <h3>👤 My Profile</h3>
                 <button
                     class="close-btn"
                     onclick="this.closest('dialog').close()"
@@ -176,28 +176,28 @@
                 </button>
             </div>
             <div style="color: #666">
-                <label><strong>Nombre:</strong></label>
-                <input type="text" value="Juan García" disabled />
+                <label><strong>Name:</strong></label>
+                <input type="text" value="John Smith" disabled />
 
                 <label><strong>Email:</strong></label>
-                <input type="email" value="juan@example.com" disabled />
+                <input type="email" value="john@example.com" disabled />
 
-                <label><strong>Ciudad:</strong></label>
-                <input type="text" value="Madrid" disabled />
+                <label><strong>City:</strong></label>
+                <input type="text" value="London" disabled />
 
                 <button
                     hx-get="/api/edit-profile"
                     hx-layer="current"
                     style="margin-top: 1rem; background: #27ae60"
                 >
-                    ✏️ Editar
+                    ✏️ Edit
                 </button>
             </div>
         </template>
 
         <template url="/api/edit-profile" delay="200">
             <div class="dialog-header">
-                <h3>✏️ Editar Perfil</h3>
+                <h3>✏️ Edit Profile</h3>
                 <button
                     class="close-btn"
                     onclick="this.closest('dialog').close()"
@@ -206,14 +206,14 @@
                 </button>
             </div>
             <div style="color: #666">
-                <label><strong>Nombre:</strong></label>
-                <input type="text" value="Juan García" />
+                <label><strong>Name:</strong></label>
+                <input type="text" value="John Smith" />
 
                 <label><strong>Email:</strong></label>
-                <input type="email" value="juan@example.com" />
+                <input type="email" value="john@example.com" />
 
-                <label><strong>Ciudad:</strong></label>
-                <input type="text" value="Madrid" />
+                <label><strong>City:</strong></label>
+                <input type="text" value="London" />
 
                 <div
                     style="
@@ -228,13 +228,13 @@
                         hx-layer="current"
                         style="background: #27ae60"
                     >
-                        💾 Guardar
+                        💾 Save
                     </button>
                     <button
                         onclick="this.closest('dialog').close()"
                         style="background: #e74c3c"
                     >
-                        ❌ Cancelar
+                        ❌ Cancel
                     </button>
                 </div>
             </div>
@@ -242,7 +242,7 @@
 
         <template url="/api/save-profile" delay="300">
             <div class="dialog-header">
-                <h3>👤 Mi Perfil</h3>
+                <h3>👤 My Profile</h3>
                 <button
                     class="close-btn"
                     onclick="this.closest('dialog').close()"
@@ -251,30 +251,30 @@
                 </button>
             </div>
             <div style="color: #666">
-                <label><strong>Nombre:</strong></label>
-                <input type="text" value="Juan García" disabled />
+                <label><strong>Name:</strong></label>
+                <input type="text" value="John Smith" disabled />
 
                 <label><strong>Email:</strong></label>
-                <input type="email" value="juan@example.com" disabled />
+                <input type="email" value="john@example.com" disabled />
 
-                <label><strong>Ciudad:</strong></label>
-                <input type="text" value="Madrid" disabled />
+                <label><strong>City:</strong></label>
+                <input type="text" value="London" disabled />
 
                 <button
                     hx-get="/api/edit-profile"
                     hx-layer="current"
                     style="margin-top: 1rem; background: #27ae60"
                 >
-                    ✏️ Editar
+                    ✏️ Edit
                 </button>
             </div>
 
-            <div class="toast">✅ Perfil guardado</div>
+            <div class="toast">✅ Profile saved</div>
         </template>
 
         <template url="/api/settings" delay="200">
             <div class="dialog-header">
-                <h3>⚙️ Configuración</h3>
+                <h3>⚙️ Settings</h3>
                 <button
                     class="close-btn"
                     onclick="this.closest('dialog').close()"
@@ -287,19 +287,19 @@
                     <label
                         style="display: flex; align-items: center; gap: 0.5rem"
                     >
-                        <input type="checkbox" checked /> Notificaciones por
-                        email
+                        <input type="checkbox" checked /> Email
+                        notifications
                     </label>
                 </div>
                 <div style="margin-bottom: 1.5rem">
                     <label
                         style="display: flex; align-items: center; gap: 0.5rem"
                     >
-                        <input type="checkbox" checked /> Modo oscuro
+                        <input type="checkbox" checked /> Dark mode
                     </label>
                 </div>
                 <div style="margin-bottom: 1.5rem">
-                    <label><strong>Idioma:</strong></label>
+                    <label><strong>Language:</strong></label>
                     <select
                         style="
                             width: 100%;
@@ -309,8 +309,8 @@
                             font-size: 1rem;
                         "
                     >
-                        <option selected>Español</option>
-                        <option>English</option>
+                        <option>Español</option>
+                        <option selected>English</option>
                         <option>Français</option>
                     </select>
                 </div>
@@ -319,14 +319,14 @@
                     hx-layer="current"
                     style="background: #27ae60; margin-top: 1rem"
                 >
-                    💾 Guardar Configuración
+                    💾 Save Settings
                 </button>
             </div>
         </template>
 
         <template url="/api/save-settings" delay="300">
             <div class="dialog-header">
-                <h3>⚙️ Configuración</h3>
+                <h3>⚙️ Settings</h3>
                 <button
                     class="close-btn"
                     onclick="this.closest('dialog').close()"
@@ -339,19 +339,19 @@
                     <label
                         style="display: flex; align-items: center; gap: 0.5rem"
                     >
-                        <input type="checkbox" checked /> Notificaciones por
-                        email
+                        <input type="checkbox" checked /> Email
+                        notifications
                     </label>
                 </div>
                 <div style="margin-bottom: 1.5rem">
                     <label
                         style="display: flex; align-items: center; gap: 0.5rem"
                     >
-                        <input type="checkbox" checked /> Modo oscuro
+                        <input type="checkbox" checked /> Dark mode
                     </label>
                 </div>
                 <div style="margin-bottom: 1.5rem">
-                    <label><strong>Idioma:</strong></label>
+                    <label><strong>Language:</strong></label>
                     <select
                         style="
                             width: 100%;
@@ -361,8 +361,8 @@
                             font-size: 1rem;
                         "
                     >
-                        <option selected>Español</option>
-                        <option>English</option>
+                        <option>Español</option>
+                        <option selected>English</option>
                         <option>Français</option>
                     </select>
                 </div>
@@ -371,16 +371,16 @@
                     hx-layer="current"
                     style="background: #27ae60; margin-top: 1rem"
                 >
-                    💾 Guardar Configuración
+                    💾 Save Settings
                 </button>
             </div>
 
-            <div class="toast">✅ Configuración guardada</div>
+            <div class="toast">✅ Settings saved</div>
         </template>
 
         <template url="/api/list" delay="200">
             <div class="dialog-header">
-                <h3>📝 Mi Lista</h3>
+                <h3>📝 My List</h3>
                 <button
                     class="close-btn"
                     onclick="this.closest('dialog').close()"
@@ -397,7 +397,7 @@
                         border-radius: 6px;
                     "
                 >
-                    <input type="checkbox" checked /> Aprender HTMX
+                    <input type="checkbox" checked /> Learn HTMX
                 </div>
                 <div
                     style="
@@ -407,7 +407,7 @@
                         border-radius: 6px;
                     "
                 >
-                    <input type="checkbox" checked /> Entender las capas
+                    <input type="checkbox" checked /> Understand layers
                 </div>
                 <div
                     style="
@@ -417,18 +417,18 @@
                         border-radius: 6px;
                     "
                 >
-                    <input type="checkbox" /> Implementar en proyecto
+                    <input type="checkbox" /> Use it in a project
                 </div>
-                <input type="text" placeholder="Agregar nueva tarea..." />
+                <input type="text" placeholder="Add new task..." />
                 <button style="background: #667eea; margin-top: 1rem">
-                    ➕ Agregar
+                    ➕ Add
                 </button>
             </div>
         </template>
 
         <template url="/api/form1" delay="200">
             <div class="dialog-header">
-                <h3>📋 Formulario Principal</h3>
+                <h3>📋 Main Form</h3>
                 <button
                     class="close-btn"
                     onclick="this.closest('dialog').close()"
@@ -437,22 +437,22 @@
                 </button>
             </div>
             <div style="color: #666">
-                <label><strong>Proyecto:</strong></label>
-                <input type="text" placeholder="Nombre del proyecto" />
+                <label><strong>Project:</strong></label>
+                <input type="text" placeholder="Project name" />
 
                 <button
                     hx-get="/api/form2"
                     hx-layer="new"
                     style="background: #27ae60; margin-top: 1rem"
                 >
-                    📄 Siguiente Paso →
+                    📄 Next Step →
                 </button>
             </div>
         </template>
 
         <template url="/api/form2" delay="200">
             <div class="dialog-header">
-                <h3>📄 Paso 2 (Anidado)</h3>
+                <h3>📄 Step 2 (Nested)</h3>
                 <button
                     class="close-btn"
                     onclick="this.closest('dialog').close()"
@@ -461,10 +461,10 @@
                 </button>
             </div>
             <div style="color: #666">
-                <p>Este diálogo está anidado dentro del anterior.</p>
-                <label><strong>Descripción:</strong></label>
+                <p>This dialog is nested inside the previous one.</p>
+                <label><strong>Description:</strong></label>
                 <textarea
-                    placeholder="Descripción del proyecto..."
+                    placeholder="Project description..."
                     rows="3"
                 ></textarea>
 
@@ -472,18 +472,18 @@
                     onclick="this.closest('dialog').close()"
                     style="background: #e74c3c; margin-top: 1rem"
                 >
-                    ← Volver
+                    ← Back
                 </button>
             </div>
         </template>
 
         <template url="/api/current-demo" delay="200">
-            🔄 Capa actualizada a las ${new Date().toLocaleTimeString()}
+            🔄 Layer updated at ${new Date().toLocaleTimeString()}
         </template>
 
         <template url="/api/wizard-step1" delay="200">
             <div class="dialog-header">
-                <h3>🧙 Paso 1 de 3: Datos básicos</h3>
+                <h3>🧙 Step 1 of 3: Basic info</h3>
                 <button
                     class="close-btn"
                     onclick="this.closest('dialog').close()"
@@ -492,12 +492,12 @@
                 </button>
             </div>
             <div style="color: #666">
-                <label><strong>Nombre:</strong></label>
+                <label><strong>Name:</strong></label>
                 <input
                     type="text"
                     id="wizard-name"
                     name="nombre"
-                    placeholder="Tu nombre"
+                    placeholder="Your name"
                 />
 
                 <button
@@ -506,14 +506,14 @@
                     hx-include="#wizard-name"
                     style="background: #27ae60; margin-top: 1rem"
                 >
-                    Siguiente →
+                    Next →
                 </button>
             </div>
         </template>
 
         <template url="/api/wizard-step2" delay="200">
             <div class="dialog-header">
-                <h3>🧙 Paso 2 de 3: Detalles</h3>
+                <h3>🧙 Step 2 of 3: Details</h3>
                 <button
                     class="close-btn"
                     onclick="this.closest('dialog').close()"
@@ -522,14 +522,14 @@
                 </button>
             </div>
             <div style="color: #666">
-                <p>Hola, <strong>${nombre || "—"}</strong>. Cuéntanos algo más:</p>
+                <p>Hi, <strong>${nombre || "—"}</strong>. Tell us a bit more:</p>
 
-                <label><strong>Comentarios:</strong></label>
+                <label><strong>Comments:</strong></label>
                 <textarea
                     id="wizard-comments"
                     name="comentarios"
                     rows="3"
-                    placeholder="Escribe aquí..."
+                    placeholder="Write here..."
                 ></textarea>
 
                 <div
@@ -545,7 +545,7 @@
                         hx-layer-back
                         style="background: #95a5a6"
                     >
-                        ← Atrás
+                        ← Back
                     </button>
                     <button
                         hx-get="/api/wizard-step3"
@@ -553,7 +553,7 @@
                         hx-include="#wizard-name, #wizard-comments"
                         style="background: #27ae60"
                     >
-                        Siguiente →
+                        Next →
                     </button>
                 </div>
             </div>
@@ -561,7 +561,7 @@
 
         <template url="/api/wizard-step3" delay="200">
             <div class="dialog-header">
-                <h3>🧙 Paso 3 de 3: Confirmar</h3>
+                <h3>🧙 Step 3 of 3: Confirm</h3>
                 <button
                     class="close-btn"
                     onclick="this.closest('dialog').close()"
@@ -570,8 +570,8 @@
                 </button>
             </div>
             <div style="color: #666">
-                <p><strong>Nombre:</strong> ${nombre || "—"}</p>
-                <p><strong>Comentarios:</strong> ${comentarios || "—"}</p>
+                <p><strong>Name:</strong> ${nombre || "—"}</p>
+                <p><strong>Comments:</strong> ${comentarios || "—"}</p>
 
                 <div
                     style="
@@ -586,7 +586,7 @@
                         hx-layer-back
                         style="background: #95a5a6"
                     >
-                        ← Atrás
+                        ← Back
                     </button>
                     <button
                         hx-post="/api/wizard-finish"
@@ -594,20 +594,20 @@
                         hx-include="#wizard-name, #wizard-comments"
                         style="background: #27ae60"
                     >
-                        ✅ Finalizar
+                        ✅ Finish
                     </button>
                 </div>
             </div>
         </template>
 
         <template url="/api/wizard-finish" delay="300">
-            🧙 Asistente completado para
+            🧙 Wizard completed for
             <strong>${nombre || "—"}</strong>: "${comentarios || "—"}"
         </template>
 
         <template url="/api/confirm-delete" delay="200">
             <div class="dialog-header">
-                <h3>⚠️ Confirmar eliminación</h3>
+                <h3>⚠️ Confirm deletion</h3>
                 <button
                     class="close-btn"
                     onclick="this.closest('dialog').close()"
@@ -617,8 +617,8 @@
             </div>
             <div style="color: #666">
                 <p>
-                    ¿Seguro que quieres eliminar el proyecto? Esta acción
-                    iniciará un proceso en segundo plano.
+                    Are you sure you want to delete the project? This action
+                    will start a background process.
                 </p>
 
                 <div
@@ -633,14 +633,14 @@
                         onclick="this.closest('dialog').close()"
                         style="background: #95a5a6"
                     >
-                        Cancelar
+                        Cancel
                     </button>
                     <button
                         hx-post="/api/delete-process"
                         hx-layer="replace"
                         style="background: #e74c3c"
                     >
-                        🗑️ Eliminar
+                        🗑️ Delete
                     </button>
                 </div>
             </div>
@@ -648,7 +648,7 @@
 
         <template url="/api/delete-process" delay="300">
             <div class="dialog-header">
-                <h3>⏳ Eliminando proyecto…</h3>
+                <h3>⏳ Deleting project…</h3>
                 <button
                     class="close-btn"
                     onclick="this.closest('dialog').close()"
@@ -657,15 +657,15 @@
                 </button>
             </div>
             <div style="color: #666">
-                <p>📄 Eliminando archivos…</p>
-                <p>🗄️ Liberando base de datos…</p>
-                <p>✅ Proceso completado.</p>
+                <p>📄 Deleting files…</p>
+                <p>🗄️ Freeing up database…</p>
+                <p>✅ Process completed.</p>
 
                 <button
                     onclick="this.closest('dialog').close()"
                     style="background: #27ae60; margin-top: 1rem"
                 >
-                    Cerrar
+                    Close
                 </button>
             </div>
         </template>
