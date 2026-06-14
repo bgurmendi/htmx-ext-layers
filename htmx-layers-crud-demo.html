@@ -25,7 +25,7 @@
                 <p style="color: #666; margin-bottom: 1rem">
                     A customers table with row editing in a dialog
                     (<code>hx-layer="new"</code> +
-                    <code>hx-layer="close"</code>) and a per-row action that
+                    <code>hx-layer="return"</code>) and a per-row action that
                     opens a multi-step wizard
                     (<code>hx-layer="step"</code>,
                     <code>hx-layer-back</code>,
@@ -205,7 +205,7 @@
                 >
                     <button
                         hx-put="/api/save-customer"
-                        hx-layer="close"
+                        hx-layer="return"
                         hx-swap="outerHTML"
                         hx-include="closest [data-hx-layer-content]"
                         style="background: #27ae60"
@@ -442,7 +442,7 @@
                     </button>
                     <button
                         hx-post="/api/new-customer-create"
-                        hx-layer="close"
+                        hx-layer="return"
                         hx-swap="outerHTML"
                         hx-include="closest [data-hx-layer-content]"
                         style="background: #27ae60"

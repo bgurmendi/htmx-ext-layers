@@ -2,7 +2,7 @@
 
 [Repository](https://github.com/bgurmendi/htmx-ext-layers) · [Online demo](https://bgurmendi.github.io/htmx-ext-layers/htmx-layers-showcase.html) . [Online CRUD App](https://bgurmendi.github.io/htmx-ext-layers/htmx-layers-crud-demo.html)
 
-An [htmx](https://htmx.org) extension that adds **stacked dialog layers** to your application. Open content in a modal `<dialog>` "layer", stack layers on top of each other, update the current layer in place, or close a layer and swap its result back into the page that opened it — all driven declaratively from your HTML and/or server response headers.
+An [htmx](https://htmx.org) extension that adds **stacked dialog layers** to your application. Open content in a modal `<dialog>` "layer", stack layers on top of each other, update the current layer in place, or return a result from a layer back to the page that opened it — all driven declaratively from your HTML and/or server response headers.
 
 ## Features
 
@@ -11,8 +11,8 @@ An [htmx](https://htmx.org) extension that adds **stacked dialog layers** to you
 - **`hx-layer="step"`** — opens the response content in a new layer, hiding the current one and chaining it as the previous step — ideal for multi-step wizards.
 - **`hx-layer-back`** — on any button or link inside a layer, discards the current step and reveals the previous one in the chain, with its state intact.
 - **`hx-layer="replace"`** — closes the current layer (and any steps chained to it) and opens the response content in a brand new layer — no "back" navigation, useful for ending a wizard into a follow-up dialog (e.g. a background process/log) or swapping one standalone dialog for another.
-- **`hx-layer="close"`** — swaps the response into the element that originally opened the layer chain, then closes the layer and removes any previous steps chained to it.
-- **`HX-Layer` response header** — lets the server decide the layer behavior (`new`, `current`, `close`, `step`, `replace`, or `none`) instead of (or in addition to) the `hx-layer` attribute.
+- **`hx-layer="return"`** — swaps the response into the element that originally opened the layer chain, then closes the layer and removes any previous steps chained to it.
+- **`HX-Layer` response header** — lets the server decide the layer behavior (`new`, `current`, `return`, `step`, `replace`, or `none`) instead of (or in addition to) the `hx-layer` attribute.
 - **`HX-Retarget` response header** — lets the server choose where inside the layer (or page) the response content is swapped.
 - **Nested layers** — layers can open further layers on top of themselves, forming a stack.
 
@@ -67,10 +67,10 @@ Use `hx-layer="current"` from inside a layer to update its content in place:
 
 If no `hx-layer` attribute or `HX-Layer` header is present but the triggering element is inside an open layer, the extension defaults to `current` mode.
 
-### Close the layer and return content to the opener
+### Return content to the opener and close the layer
 
 ```html
-<button hx-post="/api/save-profile" hx-layer="close">
+<button hx-post="/api/save-profile" hx-layer="return">
   Save
 </button>
 ```
@@ -99,16 +99,16 @@ When the response arrives, the new step opens in its own `<dialog>` and the curr
 <button type="button" hx-layer-back>← Back</button>
 ```
 
-`hx-layer-back` discards the current step's dialog and re-shows the previous one, with all its form state preserved. On the final step, `hx-layer="close"` swaps its response into the element that opened step 1 and removes the entire chain of steps from the DOM:
+`hx-layer-back` discards the current step's dialog and re-shows the previous one, with all its form state preserved. On the final step, `hx-layer="return"` swaps its response into the element that opened step 1 and removes the entire chain of steps from the DOM:
 
 ```html
 <!-- Step 3 (final) -->
-<button hx-post="/wizard/finish" hx-layer="close">
+<button hx-post="/wizard/finish" hx-layer="return">
   Finish
 </button>
 ```
 
-Closing a step at any point — via `hx-layer="close"`, `onclick="this.closest('dialog').close()"`, or the Escape key — cleans up the whole chain of previous steps, not just the current dialog.
+Closing a step at any point — via `hx-layer="return"`, `onclick="this.closest('dialog').close()"`, or the Escape key — cleans up the whole chain of previous steps, not just the current dialog.
 
 ### Replacing a layer with `hx-layer="replace"`
 
@@ -124,11 +124,11 @@ Use `hx-layer="replace"` to close the current layer (and any steps chained to it
 </button>
 ```
 
-The current dialog (and its chain of previous steps, if any) is closed and removed, and the response opens in a new dialog. The new dialog inherits the original opener as its return target, so a later `hx-layer="close"` from it still swaps its result back into the element that started the chain.
+The current dialog (and its chain of previous steps, if any) is closed and removed, and the response opens in a new dialog. The new dialog inherits the original opener as its return target, so a later `hx-layer="return"` from it still swaps its result back into the element that started the chain.
 
 ### Server-driven behavior
 
-Instead of (or in addition to) `hx-layer`, the server can respond with the `HX-Layer` header to control the swap behavior (`new`, `current`, `close`, or `none`), and with `HX-Retarget` to choose a CSS selector for where the content should be swapped within the layer or page.
+Instead of (or in addition to) `hx-layer`, the server can respond with the `HX-Layer` header to control the swap behavior (`new`, `current`, `return`, or `none`), and with `HX-Retarget` to choose a CSS selector for where the content should be swapped within the layer or page.
 
 ## Demos
 
@@ -152,7 +152,7 @@ This demo showcases:
 
 - Opening dialogs in new layers (`hx-layer="new"`)
 - Updating content within the currently open layer (`hx-layer="current"`)
-- Closing a layer and returning a result to the opener (`hx-layer="close"`)
+- Returning a result to the opener and closing the layer (`hx-layer="return"`)
 - Nested layers (a dialog opening another dialog on top of it)
 - A multi-step wizard with `hx-layer="step"` and `hx-layer-back`
 - Replacing a confirmation dialog with a follow-up one (`hx-layer="replace"`)
@@ -161,7 +161,7 @@ This demo showcases:
 
 [`htmx-layers-crud-demo.html`](htmx-layers-crud-demo.html) — try it online: https://bgurmendi.github.io/htmx-ext-layers/htmx-layers-crud-demo.html
 
-A more applied example: a customers table where rows are edited in a dialog (`hx-layer="new"` + `hx-layer="close"`, targeting the row itself), and per-row actions open multi-step wizards built with `hx-layer="step"`, `hx-layer-back`, and `hx-layer="replace"`. This demo shows:
+A more applied example: a customers table where rows are edited in a dialog (`hx-layer="new"` + `hx-layer="return"`, targeting the row itself), and per-row actions open multi-step wizards built with `hx-layer="step"`, `hx-layer-back`, and `hx-layer="replace"`. This demo shows:
 
 - Editing a table row in a dialog and updating it in place on save
 - A "Send email" wizard (pick a template → edit the message → send, with a progress/confirmation step)

@@ -101,7 +101,7 @@
                         hidden (not destroyed). You can go back with
                         <code>hx-layer-back</code> without losing the entered
                         data, and at the end
-                        <code>hx-layer="close"</code> closes and clears the
+                        <code>hx-layer="return"</code> closes and clears the
                         whole step chain.
                     </p>
                     <button
@@ -590,7 +590,7 @@
                     </button>
                     <button
                         hx-post="/api/wizard-finish"
-                        hx-layer="close"
+                        hx-layer="return"
                         hx-include="#wizard-name, #wizard-comments"
                         style="background: #27ae60"
                     >

@@ -171,7 +171,7 @@ function beforeSwap(event) {
 
     console.debug("[layers] new swap target:", event.detail.target);
 
-    dialog._hxCloseAfterSettle = false;
+    dialog._hxReturnAfterSettle = false;
 
     if (parentLayer) {
       parentLayer.classList.add("hx-layer-stacked");
@@ -197,7 +197,7 @@ function beforeSwap(event) {
 
     console.debug("[layers] step swap target:", event.detail.target);
 
-    dialog._hxCloseAfterSettle = false;
+    dialog._hxReturnAfterSettle = false;
 
     ensureSharedBackdrop();
 
@@ -231,7 +231,7 @@ function beforeSwap(event) {
 
     console.debug("[layers] replace swap target:", event.detail.target);
 
-    dialog._hxCloseAfterSettle = false;
+    dialog._hxReturnAfterSettle = false;
 
     ensureSharedBackdrop();
 
@@ -259,10 +259,10 @@ function beforeSwap(event) {
     return;
   }
 
-  if (mode === "close") {
+  if (mode === "return") {
     const layer = currentLayer || getTopLayer();
     if (!layer) {
-      console.debug("[layers] mode 'close' but no layer found");
+      console.debug("[layers] mode 'return' but no layer found");
       return;
     }
 
@@ -275,9 +275,9 @@ function beforeSwap(event) {
     }
 
     event.detail.target = returnTarget;
-    layer._hxCloseAfterSettle = true;
+    layer._hxReturnAfterSettle = true;
 
-    console.debug("[layers] close swap target:", returnTarget);
+    console.debug("[layers] return swap target:", returnTarget);
     return;
   }
 }
@@ -296,10 +296,10 @@ function afterSettle(event) {
 
   console.debug("[layers] afterSettle", { elt, mode });
 
-  if (mode !== "close") return;
+  if (mode !== "return") return;
 
   const layer = getCurrentLayer(elt) || getTopLayer();
-  if (!layer?._hxCloseAfterSettle) return;
+  if (!layer?._hxReturnAfterSettle) return;
 
   console.debug("[layers] closing layer after settle", layer);
 
