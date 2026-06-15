@@ -5,13 +5,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>HTMX Layers CRUD Demo</title>
         <link rel="stylesheet" href="style.css" type="text/css" />
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     </head>
-    <body hx-ext="layers">
-        <div class="container">
-            <h1>🧾 HTMX Layers CRUD Demo</h1>
+    <body hx-ext="layers" class="bg-base-200 min-h-screen p-8">
+        <div class="max-w-4xl mx-auto space-y-6">
+            <h1 class="text-2xl font-bold text-center">🧾 HTMX Layers CRUD Demo</h1>
 
-            <div class="card">
-                <div class="note">
+            <div class="card card-border bg-base-100 shadow-sm">
+                <div class="card-body">
+                <div class="alert alert-warning">
+                    <span>
                     <strong>ℹ️ Note:</strong> This demo uses
                     <code>demo.htmx.org</code> to simulate server responses
                     based on the
@@ -19,10 +23,11 @@
                     at the end of the page. In production, these requests
                     would go to a real server. All state in this demo lives
                     in the page's HTML (the table rows themselves).
+                    </span>
                 </div>
 
-                <h2>Customers</h2>
-                <p style="color: #666; margin-bottom: 1rem">
+                <h2 class="card-title">Customers</h2>
+                <p class="mb-4">
                     A customers table with row editing in a dialog
                     (<code>hx-layer="new"</code> +
                     <code>hx-layer="return"</code>) and a per-row action that
@@ -34,18 +39,19 @@
                     table.
                 </p>
 
-                <div class="button-group" style="margin-bottom: 1rem">
+                <div class="flex gap-4 mb-4">
                     <button
                         hx-get="/api/new-customer-step1"
                         hx-layer="step"
                         hx-target="#new-customer-anchor"
-                        style="background: #27ae60"
+                        class="btn btn-success"
                     >
                         ➕ New customer
                     </button>
                 </div>
 
-                <table class="crud-table">
+                <div class="overflow-x-auto">
+                <table class="table">
                     <thead>
                         <tr>
                             <th>ID</th>
@@ -69,9 +75,9 @@
                             <td>Person</td>
                             <td>ana@example.com</td>
                             <td>600111222</td>
-                            <td class="row-actions">
+                            <td class="space-x-1 whitespace-nowrap">
                                 <button
-                                    class="btn-small"
+                                    class="btn btn-xs"
                                     hx-get="/api/edit-customer"
                                     hx-layer="new"
                                     hx-target="closest tr"
@@ -80,8 +86,7 @@
                                     ✏️ Edit
                                 </button>
                                 <button
-                                    class="btn-small"
-                                    style="background: #f39c12"
+                                    class="btn btn-warning btn-xs"
                                     hx-get="/api/email-step1"
                                     hx-layer="step"
                                     hx-vals="js:{id: this.closest('tr').dataset.id, nombre: this.closest('tr').dataset.nombre, email: this.closest('tr').dataset.email}"
@@ -102,9 +107,9 @@
                             <td>Company</td>
                             <td>contact@acme.com</td>
                             <td>912345678</td>
-                            <td class="row-actions">
+                            <td class="space-x-1 whitespace-nowrap">
                                 <button
-                                    class="btn-small"
+                                    class="btn btn-xs"
                                     hx-get="/api/edit-customer"
                                     hx-layer="new"
                                     hx-target="closest tr"
@@ -113,8 +118,7 @@
                                     ✏️ Edit
                                 </button>
                                 <button
-                                    class="btn-small"
-                                    style="background: #f39c12"
+                                    class="btn btn-warning btn-xs"
                                     hx-get="/api/email-step1"
                                     hx-layer="step"
                                     hx-vals="js:{id: this.closest('tr').dataset.id, nombre: this.closest('tr').dataset.nombre, email: this.closest('tr').dataset.email}"
@@ -135,9 +139,9 @@
                             <td>Person</td>
                             <td>carlos@example.com</td>
                             <td>611222333</td>
-                            <td class="row-actions">
+                            <td class="space-x-1 whitespace-nowrap">
                                 <button
-                                    class="btn-small"
+                                    class="btn btn-xs"
                                     hx-get="/api/edit-customer"
                                     hx-layer="new"
                                     hx-target="closest tr"
@@ -146,8 +150,7 @@
                                     ✏️ Edit
                                 </button>
                                 <button
-                                    class="btn-small"
-                                    style="background: #f39c12"
+                                    class="btn btn-warning btn-xs"
                                     hx-get="/api/email-step1"
                                     hx-layer="step"
                                     hx-vals="js:{id: this.closest('tr').dataset.id, nombre: this.closest('tr').dataset.nombre, email: this.closest('tr').dataset.email}"
@@ -156,9 +159,11 @@
                                 </button>
                             </td>
                         </tr>
-                        <tr id="new-customer-anchor" style="display: none"></tr>
+                        <tr id="new-customer-anchor" class="hidden"></tr>
                     </tbody>
                 </table>
+                </div>
+                </div>
             </div>
         </div>
 
@@ -176,45 +181,40 @@
             <div class="dialog-header">
                 <h3>✏️ Edit customer #${id}</h3>
                 <button
-                    class="close-btn"
+                    class="btn btn-square btn-sm btn-ghost"
                     onclick="this.closest('dialog').close()"
                 >
                     ✕
                 </button>
             </div>
-            <div style="color: #666">
+            <div class="space-y-3">
                 <input type="hidden" name="id" value="${id}" />
                 <input type="hidden" name="tipo" value="${tipo}" />
 
                 <label><strong>Name:</strong></label>
-                <input type="text" name="nombre" value="${nombre}" />
+                <input type="text" name="nombre" value="${nombre}" class="input w-full" />
 
                 <label><strong>Email:</strong></label>
-                <input type="email" name="email" value="${email}" />
+                <input type="email" name="email" value="${email}" class="input w-full" />
 
                 <label><strong>Phone:</strong></label>
-                <input type="text" name="telefono" value="${telefono}" />
+                <input type="text" name="telefono" value="${telefono}" class="input w-full" />
 
                 <div
-                    style="
-                        display: grid;
-                        grid-template-columns: 1fr 1fr;
-                        gap: 1rem;
-                        margin-top: 1rem;
-                    "
+                    class="grid grid-cols-2 gap-4 mt-4"
                 >
                     <button
                         hx-put="/api/save-customer"
                         hx-layer="return"
                         hx-swap="outerHTML"
                         hx-include="closest [data-hx-layer-content]"
-                        style="background: #27ae60"
+                        class="btn btn-success"
                     >
                         💾 Save
                     </button>
                     <button
                         onclick="this.closest('dialog').close()"
-                        style="background: #e74c3c"
+                        class="btn btn-error"
                     >
                         ❌ Cancel
                     </button>
@@ -236,9 +236,9 @@
                 <td>${tipo === 'company' ? 'Company' : 'Person'}</td>
                 <td>${email}</td>
                 <td>${telefono}</td>
-                <td class="row-actions">
+                <td class="space-x-1 whitespace-nowrap">
                     <button
-                        class="btn-small"
+                        class="btn btn-xs"
                         hx-get="/api/edit-customer"
                         hx-layer="new"
                         hx-target="closest tr"
@@ -247,8 +247,7 @@
                         ✏️ Edit
                     </button>
                     <button
-                        class="btn-small"
-                        style="background: #f39c12"
+                        class="btn btn-warning btn-xs"
                         hx-get="/api/email-step1"
                         hx-layer="step"
                         hx-vals="js:{id: this.closest('tr').dataset.id, nombre: this.closest('tr').dataset.nombre, email: this.closest('tr').dataset.email}"
@@ -263,13 +262,13 @@
             <div class="dialog-header">
                 <h3>✉️ Send email — Step 1 of 3</h3>
                 <button
-                    class="close-btn"
+                    class="btn btn-square btn-sm btn-ghost"
                     onclick="this.closest('dialog').close()"
                 >
                     ✕
                 </button>
             </div>
-            <div style="color: #666">
+            <div class="space-y-3">
                 <p>
                     Recipient: <strong>${nombre}</strong> (${email})
                 </p>
@@ -279,7 +278,7 @@
                 <input type="hidden" name="email" value="${email}" />
 
                 <label><strong>Template:</strong></label>
-                <select name="plantilla">
+                <select name="plantilla" class="select w-full">
                     <option value="welcome">Welcome</option>
                     <option value="promo">Promotion</option>
                     <option value="reminder">Payment reminder</option>
@@ -289,7 +288,7 @@
                     hx-get="/api/email-step2"
                     hx-layer="step"
                     hx-include="closest [data-hx-layer-content]"
-                    style="background: #27ae60; margin-top: 1rem"
+                    class="btn btn-success mt-4"
                 >
                     Next →
                 </button>
@@ -300,13 +299,13 @@
             <div class="dialog-header">
                 <h3>✉️ Send email — Step 2 of 3</h3>
                 <button
-                    class="close-btn"
+                    class="btn btn-square btn-sm btn-ghost"
                     onclick="this.closest('dialog').close()"
                 >
                     ✕
                 </button>
             </div>
-            <div style="color: #666">
+            <div class="space-y-3">
                 <p>
                     Template: <strong>${({welcome: 'Welcome', promo: 'Promotion', reminder: 'Payment reminder'})[plantilla] || plantilla}</strong>
                 </p>
@@ -317,24 +316,19 @@
                 <input type="hidden" name="plantilla" value="${plantilla}" />
 
                 <label><strong>Message:</strong></label>
-                <textarea name="texto" rows="5">${({
+                <textarea name="texto" rows="5" class="textarea w-full">${({
                     welcome: 'Hi ' + nombre + ', welcome aboard! We are happy to have you with us.',
                     promo: 'Hi ' + nombre + ', check out our latest promotion just for you!',
                     reminder: 'Hi ' + nombre + ', this is a friendly reminder about your pending payment.'
                 })[plantilla] || ''}</textarea>
 
                 <div
-                    style="
-                        display: grid;
-                        grid-template-columns: 1fr 1fr;
-                        gap: 1rem;
-                        margin-top: 1rem;
-                    "
+                    class="grid grid-cols-2 gap-4 mt-4"
                 >
                     <button
                         type="button"
                         hx-layer-back
-                        style="background: #95a5a6"
+                        class="btn btn-neutral"
                     >
                         ← Back
                     </button>
@@ -342,7 +336,7 @@
                         hx-post="/api/email-send"
                         hx-layer="replace"
                         hx-include="closest [data-hx-layer-content]"
-                        style="background: #27ae60"
+                        class="btn btn-success"
                     >
                         📤 Send
                     </button>
@@ -354,20 +348,20 @@
             <div class="dialog-header">
                 <h3>📤 Sending email…</h3>
                 <button
-                    class="close-btn"
+                    class="btn btn-square btn-sm btn-ghost"
                     onclick="this.closest('dialog').close()"
                 >
                     ✕
                 </button>
             </div>
-            <div style="color: #666">
+            <div class="space-y-3">
                 <p>📨 Connecting to mail server…</p>
                 <p>✉️ Sending to ${email}…</p>
                 <p>✅ Email sent to <strong>${nombre}</strong>.</p>
 
                 <button
                     onclick="this.closest('dialog').close()"
-                    style="background: #27ae60; margin-top: 1rem"
+                    class="btn btn-success mt-4"
                 >
                     Close
                 </button>
@@ -378,15 +372,15 @@
             <div class="dialog-header">
                 <h3>➕ New customer — Step 1 of 2</h3>
                 <button
-                    class="close-btn"
+                    class="btn btn-square btn-sm btn-ghost"
                     onclick="this.closest('dialog').close()"
                 >
                     ✕
                 </button>
             </div>
-            <div style="color: #666">
+            <div class="space-y-3">
                 <label><strong>Customer type:</strong></label>
-                <select name="tipo" id="new-customer-tipo">
+                <select name="tipo" id="new-customer-tipo" class="select w-full">
                     <option value="person">Person</option>
                     <option value="company">Company</option>
                 </select>
@@ -395,7 +389,7 @@
                     hx-get="/api/new-customer-step2"
                     hx-layer="step"
                     hx-include="#new-customer-tipo"
-                    style="background: #27ae60; margin-top: 1rem"
+                    class="btn btn-success mt-4"
                 >
                     Next →
                 </button>
@@ -406,37 +400,32 @@
             <div class="dialog-header">
                 <h3>➕ New customer — Step 2 of 2</h3>
                 <button
-                    class="close-btn"
+                    class="btn btn-square btn-sm btn-ghost"
                     onclick="this.closest('dialog').close()"
                 >
                     ✕
                 </button>
             </div>
-            <div style="color: #666">
+            <div class="space-y-3">
                 <input type="hidden" name="tipo" value="${tipo}" />
 
                 ${tipo === 'company'
-                    ? '<label><strong>Company name:</strong></label><input type="text" name="nombre" placeholder="Company name" />'
-                    : '<label><strong>Full name:</strong></label><input type="text" name="nombre" placeholder="Full name" />'}
+                    ? '<label><strong>Company name:</strong></label><input type="text" name="nombre" placeholder="Company name" class="input w-full" />'
+                    : '<label><strong>Full name:</strong></label><input type="text" name="nombre" placeholder="Full name" class="input w-full" />'}
 
                 <label><strong>Email:</strong></label>
-                <input type="email" name="email" placeholder="email@example.com" />
+                <input type="email" name="email" placeholder="email@example.com" class="input w-full" />
 
                 <label><strong>Phone:</strong></label>
-                <input type="text" name="telefono" placeholder="600111222" />
+                <input type="text" name="telefono" placeholder="600111222" class="input w-full" />
 
                 <div
-                    style="
-                        display: grid;
-                        grid-template-columns: 1fr 1fr;
-                        gap: 1rem;
-                        margin-top: 1rem;
-                    "
+                    class="grid grid-cols-2 gap-4 mt-4"
                 >
                     <button
                         type="button"
                         hx-layer-back
-                        style="background: #95a5a6"
+                        class="btn btn-neutral"
                     >
                         ← Back
                     </button>
@@ -445,7 +434,7 @@
                         hx-layer="return"
                         hx-swap="outerHTML"
                         hx-include="closest [data-hx-layer-content]"
-                        style="background: #27ae60"
+                        class="btn btn-success"
                     >
                         ✅ Accept
                     </button>
@@ -467,9 +456,9 @@
                 <td>${tipo === 'company' ? 'Company' : 'Person'}</td>
                 <td>${email}</td>
                 <td>${telefono}</td>
-                <td class="row-actions">
+                <td class="space-x-1 whitespace-nowrap">
                     <button
-                        class="btn-small"
+                        class="btn btn-xs"
                         hx-get="/api/edit-customer"
                         hx-layer="new"
                         hx-target="closest tr"
@@ -478,8 +467,7 @@
                         ✏️ Edit
                     </button>
                     <button
-                        class="btn-small"
-                        style="background: #f39c12"
+                        class="btn btn-warning btn-xs"
                         hx-get="/api/email-step1"
                         hx-layer="step"
                         hx-vals="js:{id: this.closest('tr').dataset.id, nombre: this.closest('tr').dataset.nombre, email: this.closest('tr').dataset.email}"
@@ -488,7 +476,7 @@
                     </button>
                 </td>
             </tr>
-            <tr id="new-customer-anchor" style="display: none"></tr>
+            <tr id="new-customer-anchor" class="hidden"></tr>
         </template>
     </body>
 </html>

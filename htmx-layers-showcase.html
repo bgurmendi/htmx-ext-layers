@@ -5,13 +5,17 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>HTMX Layers Extension Showcase</title>
         <link rel="stylesheet" href="style.css" type="text/css" />
+        <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     </head>
-    <body hx-ext="layers">
-        <div class="container">
-            <h1>🎨 HTMX Layers Extension Showcase</h1>
+    <body hx-ext="layers" class="bg-base-200 min-h-screen p-8">
+        <div class="max-w-3xl mx-auto space-y-6">
+            <h1 class="text-2xl font-bold text-center">🎨 HTMX Layers Extension Showcase</h1>
 
-            <div class="card">
-                <div class="note">
+            <div class="card card-border bg-base-100 shadow-sm">
+                <div class="card-body">
+                <div class="alert alert-warning">
+                    <span>
                     <strong>ℹ️ Note:</strong> This demo uses
                     <code>demo.htmx.org</code> to simulate server responses
                     based on the
@@ -19,12 +23,14 @@
                     at the end of the page. In production, these requests
                     would go to a real server that can also return headers
                     such as <code>HX-Layer</code> and <code>HX-Retarget</code>.
+                    </span>
                 </div>
 
-                <h2>Usage Examples</h2>
+                <h2 class="card-title mt-4">Usage Examples</h2>
 
-                <div class="button-group">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-2">
                     <button
+                        class="btn btn-primary"
                         hx-get="/api/profile"
                         hx-layer="new"
                         hx-trigger="click"
@@ -32,6 +38,7 @@
                         📋 Open Profile (New Layer)
                     </button>
                     <button
+                        class="btn btn-primary"
                         hx-get="/api/settings"
                         hx-layer="new"
                         hx-trigger="click"
@@ -39,6 +46,7 @@
                         ⚙️ Open Settings
                     </button>
                     <button
+                        class="btn btn-primary"
                         hx-get="/api/list"
                         hx-layer="new"
                         hx-trigger="click"
@@ -47,56 +55,52 @@
                     </button>
                 </div>
 
-                <div class="status info" id="demo-status">
+                <div class="alert alert-info font-mono" id="demo-status">
                     Status: Ready to interact
+                </div>
                 </div>
             </div>
 
-            <div class="card">
-                <h2>Use Cases</h2>
+            <div class="card card-border bg-base-100 shadow-sm">
+                <div class="card-body">
+                <h2 class="card-title">Use Cases</h2>
 
-                <div class="nested-example">
-                    <h3 style="color: #667eea; margin-bottom: 0.5rem">
+                <div class="bg-base-200 rounded-box p-4">
+                    <h3 class="text-primary mb-2">
                         1️⃣ Nested Layers
                     </h3>
-                    <p style="color: #666; margin-bottom: 1rem">
+                    <p class="mb-4">
                         Opens a dialog inside another dialog
                     </p>
                     <button
+                        class="btn btn-success"
                         hx-get="/api/form1"
                         hx-layer="new"
-                        style="background: #27ae60"
                     >
                         Main Form
                     </button>
                 </div>
 
-                <div class="nested-example">
-                    <h3 style="color: #667eea; margin-bottom: 0.5rem">
+                <div class="bg-base-200 rounded-box p-4 mt-4">
+                    <h3 class="text-primary mb-2">
                         2️⃣ Current Mode
                     </h3>
-                    <p style="color: #666; margin-bottom: 1rem">
+                    <p class="mb-4">
                         Updates content within the current layer
                     </p>
-                    <p
-                        style="
-                            font-size: 0.9rem;
-                            color: #888;
-                            margin-bottom: 0.5rem;
-                        "
-                    >
+                    <p class="text-sm text-base-content/50 mb-2">
                         (Open a dialog above first, then use this button)
                     </p>
-                    <button hx-get="/api/current-demo" hx-layer="current">
+                    <button class="btn btn-primary" hx-get="/api/current-demo" hx-layer="current">
                         🔄 Update current layer
                     </button>
                 </div>
 
-                <div class="nested-example">
-                    <h3 style="color: #667eea; margin-bottom: 0.5rem">
+                <div class="bg-base-200 rounded-box p-4 mt-4">
+                    <h3 class="text-primary mb-2">
                         3️⃣ Step Wizard (hx-layer="step")
                     </h3>
-                    <p style="color: #666; margin-bottom: 1rem">
+                    <p class="mb-4">
                         Each step replaces the previous one, which stays
                         hidden (not destroyed). You can go back with
                         <code>hx-layer-back</code> without losing the entered
@@ -105,31 +109,32 @@
                         whole step chain.
                     </p>
                     <button
+                        class="btn btn-warning"
                         hx-get="/api/wizard-step1"
                         hx-layer="step"
-                        style="background: #f39c12"
                     >
                         🧙 Start wizard
                     </button>
                 </div>
 
-                <div class="nested-example">
-                    <h3 style="color: #667eea; margin-bottom: 0.5rem">
+                <div class="bg-base-200 rounded-box p-4 mt-4">
+                    <h3 class="text-primary mb-2">
                         4️⃣ Replace Dialog (hx-layer="replace")
                     </h3>
-                    <p style="color: #666; margin-bottom: 1rem">
+                    <p class="mb-4">
                         Closes the current dialog (with no way back) and opens
                         the response in a new one. Useful for finishing a
                         confirmation or wizard and then showing an ongoing
                         process.
                     </p>
                     <button
+                        class="btn btn-error"
                         hx-get="/api/confirm-delete"
                         hx-layer="new"
-                        style="background: #e74c3c"
                     >
                         🗑️ Delete project
                     </button>
+                </div>
                 </div>
             </div>
         </div>
@@ -160,7 +165,7 @@
             function updateStatus(message, className = "info") {
                 const statusEl = document.getElementById("demo-status");
                 statusEl.textContent = message;
-                statusEl.className = `status ${className}`;
+                statusEl.className = `alert alert-${className} font-mono`;
             }
         </script>
 
@@ -169,26 +174,26 @@
             <div class="dialog-header">
                 <h3>👤 My Profile</h3>
                 <button
-                    class="close-btn"
+                    class="btn btn-square btn-sm btn-ghost"
                     onclick="this.closest('dialog').close()"
                 >
                     ✕
                 </button>
             </div>
-            <div style="color: #666">
+            <div class="space-y-3">
                 <label><strong>Name:</strong></label>
-                <input type="text" value="John Smith" disabled />
+                <input type="text" value="John Smith" disabled class="input w-full" />
 
                 <label><strong>Email:</strong></label>
-                <input type="email" value="john@example.com" disabled />
+                <input type="email" value="john@example.com" disabled class="input w-full" />
 
                 <label><strong>City:</strong></label>
-                <input type="text" value="London" disabled />
+                <input type="text" value="London" disabled class="input w-full" />
 
                 <button
                     hx-get="/api/edit-profile"
                     hx-layer="current"
-                    style="margin-top: 1rem; background: #27ae60"
+                    class="btn btn-success mt-4"
                 >
                     ✏️ Edit
                 </button>
@@ -199,40 +204,35 @@
             <div class="dialog-header">
                 <h3>✏️ Edit Profile</h3>
                 <button
-                    class="close-btn"
+                    class="btn btn-square btn-sm btn-ghost"
                     onclick="this.closest('dialog').close()"
                 >
                     ✕
                 </button>
             </div>
-            <div style="color: #666">
+            <div class="space-y-3">
                 <label><strong>Name:</strong></label>
-                <input type="text" value="John Smith" />
+                <input type="text" value="John Smith" class="input w-full" />
 
                 <label><strong>Email:</strong></label>
-                <input type="email" value="john@example.com" />
+                <input type="email" value="john@example.com" class="input w-full" />
 
                 <label><strong>City:</strong></label>
-                <input type="text" value="London" />
+                <input type="text" value="London" class="input w-full" />
 
                 <div
-                    style="
-                        display: grid;
-                        grid-template-columns: 1fr 1fr;
-                        gap: 1rem;
-                        margin-top: 1rem;
-                    "
+                    class="grid grid-cols-2 gap-4 mt-4"
                 >
                     <button
                         hx-post="/api/save-profile"
                         hx-layer="current"
-                        style="background: #27ae60"
+                        class="btn btn-success"
                     >
                         💾 Save
                     </button>
                     <button
                         onclick="this.closest('dialog').close()"
-                        style="background: #e74c3c"
+                        class="btn btn-error"
                     >
                         ❌ Cancel
                     </button>
@@ -244,70 +244,64 @@
             <div class="dialog-header">
                 <h3>👤 My Profile</h3>
                 <button
-                    class="close-btn"
+                    class="btn btn-square btn-sm btn-ghost"
                     onclick="this.closest('dialog').close()"
                 >
                     ✕
                 </button>
             </div>
-            <div style="color: #666">
+            <div class="space-y-3">
                 <label><strong>Name:</strong></label>
-                <input type="text" value="John Smith" disabled />
+                <input type="text" value="John Smith" disabled class="input w-full" />
 
                 <label><strong>Email:</strong></label>
-                <input type="email" value="john@example.com" disabled />
+                <input type="email" value="john@example.com" disabled class="input w-full" />
 
                 <label><strong>City:</strong></label>
-                <input type="text" value="London" disabled />
+                <input type="text" value="London" disabled class="input w-full" />
 
                 <button
                     hx-get="/api/edit-profile"
                     hx-layer="current"
-                    style="margin-top: 1rem; background: #27ae60"
+                    class="btn btn-success mt-4"
                 >
                     ✏️ Edit
                 </button>
             </div>
 
-            <div class="toast">✅ Profile saved</div>
+            <div class="toast alert alert-success">✅ Profile saved</div>
         </template>
 
         <template url="/api/settings" delay="200">
             <div class="dialog-header">
                 <h3>⚙️ Settings</h3>
                 <button
-                    class="close-btn"
+                    class="btn btn-square btn-sm btn-ghost"
                     onclick="this.closest('dialog').close()"
                 >
                     ✕
                 </button>
             </div>
-            <div style="color: #666">
-                <div style="margin-bottom: 1.5rem">
+            <div class="space-y-3">
+                <div class="mb-6">
                     <label
-                        style="display: flex; align-items: center; gap: 0.5rem"
+                        class="flex items-center gap-2"
                     >
-                        <input type="checkbox" checked /> Email
+                        <input type="checkbox" checked class="checkbox" /> Email
                         notifications
                     </label>
                 </div>
-                <div style="margin-bottom: 1.5rem">
+                <div class="mb-6">
                     <label
-                        style="display: flex; align-items: center; gap: 0.5rem"
+                        class="flex items-center gap-2"
                     >
-                        <input type="checkbox" checked /> Dark mode
+                        <input type="checkbox" checked class="checkbox" /> Dark mode
                     </label>
                 </div>
-                <div style="margin-bottom: 1.5rem">
+                <div class="mb-6">
                     <label><strong>Language:</strong></label>
                     <select
-                        style="
-                            width: 100%;
-                            padding: 0.75rem;
-                            border: 1px solid #ddd;
-                            border-radius: 6px;
-                            font-size: 1rem;
-                        "
+                        class="select w-full"
                     >
                         <option>Español</option>
                         <option selected>English</option>
@@ -317,7 +311,7 @@
                 <button
                     hx-post="/api/save-settings"
                     hx-layer="current"
-                    style="background: #27ae60; margin-top: 1rem"
+                    class="btn btn-success mt-4"
                 >
                     💾 Save Settings
                 </button>
@@ -328,38 +322,32 @@
             <div class="dialog-header">
                 <h3>⚙️ Settings</h3>
                 <button
-                    class="close-btn"
+                    class="btn btn-square btn-sm btn-ghost"
                     onclick="this.closest('dialog').close()"
                 >
                     ✕
                 </button>
             </div>
-            <div style="color: #666">
-                <div style="margin-bottom: 1.5rem">
+            <div class="space-y-3">
+                <div class="mb-6">
                     <label
-                        style="display: flex; align-items: center; gap: 0.5rem"
+                        class="flex items-center gap-2"
                     >
-                        <input type="checkbox" checked /> Email
+                        <input type="checkbox" checked class="checkbox" /> Email
                         notifications
                     </label>
                 </div>
-                <div style="margin-bottom: 1.5rem">
+                <div class="mb-6">
                     <label
-                        style="display: flex; align-items: center; gap: 0.5rem"
+                        class="flex items-center gap-2"
                     >
-                        <input type="checkbox" checked /> Dark mode
+                        <input type="checkbox" checked class="checkbox" /> Dark mode
                     </label>
                 </div>
-                <div style="margin-bottom: 1.5rem">
+                <div class="mb-6">
                     <label><strong>Language:</strong></label>
                     <select
-                        style="
-                            width: 100%;
-                            padding: 0.75rem;
-                            border: 1px solid #ddd;
-                            border-radius: 6px;
-                            font-size: 1rem;
-                        "
+                        class="select w-full"
                     >
                         <option>Español</option>
                         <option selected>English</option>
@@ -369,58 +357,43 @@
                 <button
                     hx-post="/api/save-settings"
                     hx-layer="current"
-                    style="background: #27ae60; margin-top: 1rem"
+                    class="btn btn-success mt-4"
                 >
                     💾 Save Settings
                 </button>
             </div>
 
-            <div class="toast">✅ Settings saved</div>
+            <div class="toast alert alert-success">✅ Settings saved</div>
         </template>
 
         <template url="/api/list" delay="200">
             <div class="dialog-header">
                 <h3>📝 My List</h3>
                 <button
-                    class="close-btn"
+                    class="btn btn-square btn-sm btn-ghost"
                     onclick="this.closest('dialog').close()"
                 >
                     ✕
                 </button>
             </div>
-            <div style="color: #666">
+            <div class="space-y-3">
                 <div
-                    style="
-                        margin-bottom: 1rem;
-                        padding: 1rem;
-                        background: #f9f9f9;
-                        border-radius: 6px;
-                    "
+                    class="mb-4 p-4 bg-base-200 rounded-box"
                 >
-                    <input type="checkbox" checked /> Learn HTMX
+                    <input type="checkbox" checked class="checkbox" /> Learn HTMX
                 </div>
                 <div
-                    style="
-                        margin-bottom: 1rem;
-                        padding: 1rem;
-                        background: #f9f9f9;
-                        border-radius: 6px;
-                    "
+                    class="mb-4 p-4 bg-base-200 rounded-box"
                 >
-                    <input type="checkbox" checked /> Understand layers
+                    <input type="checkbox" checked class="checkbox" /> Understand layers
                 </div>
                 <div
-                    style="
-                        margin-bottom: 1rem;
-                        padding: 1rem;
-                        background: #f9f9f9;
-                        border-radius: 6px;
-                    "
+                    class="mb-4 p-4 bg-base-200 rounded-box"
                 >
-                    <input type="checkbox" /> Use it in a project
+                    <input type="checkbox" class="checkbox" /> Use it in a project
                 </div>
-                <input type="text" placeholder="Add new task..." />
-                <button style="background: #667eea; margin-top: 1rem">
+                <input type="text" placeholder="Add new task..." class="input w-full" />
+                <button class="btn btn-primary mt-4">
                     ➕ Add
                 </button>
             </div>
@@ -430,20 +403,20 @@
             <div class="dialog-header">
                 <h3>📋 Main Form</h3>
                 <button
-                    class="close-btn"
+                    class="btn btn-square btn-sm btn-ghost"
                     onclick="this.closest('dialog').close()"
                 >
                     ✕
                 </button>
             </div>
-            <div style="color: #666">
+            <div class="space-y-3">
                 <label><strong>Project:</strong></label>
-                <input type="text" placeholder="Project name" />
+                <input type="text" placeholder="Project name" class="input w-full" />
 
                 <button
                     hx-get="/api/form2"
                     hx-layer="new"
-                    style="background: #27ae60; margin-top: 1rem"
+                    class="btn btn-success mt-4"
                 >
                     📄 Next Step →
                 </button>
@@ -454,23 +427,23 @@
             <div class="dialog-header">
                 <h3>📄 Step 2 (Nested)</h3>
                 <button
-                    class="close-btn"
+                    class="btn btn-square btn-sm btn-ghost"
                     onclick="this.closest('dialog').close()"
                 >
                     ✕
                 </button>
             </div>
-            <div style="color: #666">
+            <div class="space-y-3">
                 <p>This dialog is nested inside the previous one.</p>
                 <label><strong>Description:</strong></label>
-                <textarea
+                <textarea class="textarea w-full"
                     placeholder="Project description..."
                     rows="3"
                 ></textarea>
 
                 <button
                     onclick="this.closest('dialog').close()"
-                    style="background: #e74c3c; margin-top: 1rem"
+                    class="btn btn-error mt-4"
                 >
                     ← Back
                 </button>
@@ -485,18 +458,19 @@
             <div class="dialog-header">
                 <h3>🧙 Step 1 of 3: Basic info</h3>
                 <button
-                    class="close-btn"
+                    class="btn btn-square btn-sm btn-ghost"
                     onclick="this.closest('dialog').close()"
                 >
                     ✕
                 </button>
             </div>
-            <div style="color: #666">
+            <div class="space-y-3">
                 <label><strong>Name:</strong></label>
                 <input
                     type="text"
                     id="wizard-name"
                     name="nombre"
+                    class="input w-full"
                     placeholder="Your name"
                 />
 
@@ -504,7 +478,7 @@
                     hx-get="/api/wizard-step2"
                     hx-layer="step"
                     hx-include="#wizard-name"
-                    style="background: #27ae60; margin-top: 1rem"
+                    class="btn btn-success mt-4"
                 >
                     Next →
                 </button>
@@ -515,17 +489,17 @@
             <div class="dialog-header">
                 <h3>🧙 Step 2 of 3: Details</h3>
                 <button
-                    class="close-btn"
+                    class="btn btn-square btn-sm btn-ghost"
                     onclick="this.closest('dialog').close()"
                 >
                     ✕
                 </button>
             </div>
-            <div style="color: #666">
+            <div class="space-y-3">
                 <p>Hi, <strong>${nombre || "—"}</strong>. Tell us a bit more:</p>
 
                 <label><strong>Comments:</strong></label>
-                <textarea
+                <textarea class="textarea w-full"
                     id="wizard-comments"
                     name="comentarios"
                     rows="3"
@@ -533,17 +507,12 @@
                 ></textarea>
 
                 <div
-                    style="
-                        display: grid;
-                        grid-template-columns: 1fr 1fr;
-                        gap: 1rem;
-                        margin-top: 1rem;
-                    "
+                    class="grid grid-cols-2 gap-4 mt-4"
                 >
                     <button
                         type="button"
                         hx-layer-back
-                        style="background: #95a5a6"
+                        class="btn btn-neutral"
                     >
                         ← Back
                     </button>
@@ -551,7 +520,7 @@
                         hx-get="/api/wizard-step3"
                         hx-layer="step"
                         hx-include="#wizard-name, #wizard-comments"
-                        style="background: #27ae60"
+                        class="btn btn-success"
                     >
                         Next →
                     </button>
@@ -563,28 +532,23 @@
             <div class="dialog-header">
                 <h3>🧙 Step 3 of 3: Confirm</h3>
                 <button
-                    class="close-btn"
+                    class="btn btn-square btn-sm btn-ghost"
                     onclick="this.closest('dialog').close()"
                 >
                     ✕
                 </button>
             </div>
-            <div style="color: #666">
+            <div class="space-y-3">
                 <p><strong>Name:</strong> ${nombre || "—"}</p>
                 <p><strong>Comments:</strong> ${comentarios || "—"}</p>
 
                 <div
-                    style="
-                        display: grid;
-                        grid-template-columns: 1fr 1fr;
-                        gap: 1rem;
-                        margin-top: 1rem;
-                    "
+                    class="grid grid-cols-2 gap-4 mt-4"
                 >
                     <button
                         type="button"
                         hx-layer-back
-                        style="background: #95a5a6"
+                        class="btn btn-neutral"
                     >
                         ← Back
                     </button>
@@ -592,7 +556,7 @@
                         hx-post="/api/wizard-finish"
                         hx-layer="return"
                         hx-include="#wizard-name, #wizard-comments"
-                        style="background: #27ae60"
+                        class="btn btn-success"
                     >
                         ✅ Finish
                     </button>
@@ -609,36 +573,31 @@
             <div class="dialog-header">
                 <h3>⚠️ Confirm deletion</h3>
                 <button
-                    class="close-btn"
+                    class="btn btn-square btn-sm btn-ghost"
                     onclick="this.closest('dialog').close()"
                 >
                     ✕
                 </button>
             </div>
-            <div style="color: #666">
+            <div class="space-y-3">
                 <p>
                     Are you sure you want to delete the project? This action
                     will start a background process.
                 </p>
 
                 <div
-                    style="
-                        display: grid;
-                        grid-template-columns: 1fr 1fr;
-                        gap: 1rem;
-                        margin-top: 1rem;
-                    "
+                    class="grid grid-cols-2 gap-4 mt-4"
                 >
                     <button
                         onclick="this.closest('dialog').close()"
-                        style="background: #95a5a6"
+                        class="btn btn-neutral"
                     >
                         Cancel
                     </button>
                     <button
                         hx-post="/api/delete-process"
                         hx-layer="replace"
-                        style="background: #e74c3c"
+                        class="btn btn-error"
                     >
                         🗑️ Delete
                     </button>
@@ -650,20 +609,20 @@
             <div class="dialog-header">
                 <h3>⏳ Deleting project…</h3>
                 <button
-                    class="close-btn"
+                    class="btn btn-square btn-sm btn-ghost"
                     onclick="this.closest('dialog').close()"
                 >
                     ✕
                 </button>
             </div>
-            <div style="color: #666">
+            <div class="space-y-3">
                 <p>📄 Deleting files…</p>
                 <p>🗄️ Freeing up database…</p>
                 <p>✅ Process completed.</p>
 
                 <button
                     onclick="this.closest('dialog').close()"
-                    style="background: #27ae60; margin-top: 1rem"
+                    class="btn btn-success mt-4"
                 >
                     Close
                 </button>
