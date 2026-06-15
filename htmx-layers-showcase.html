@@ -8,7 +8,7 @@
         <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     </head>
-    <body hx-ext="layers" class="bg-base-200 min-h-screen p-8">
+    <body hx-ext="layers notify" class="bg-base-200 min-h-screen p-8">
         <div class="max-w-3xl mx-auto space-y-6">
             <h1 class="text-2xl font-bold text-center">🎨 HTMX Layers Extension Showcase</h1>
 
@@ -145,6 +145,9 @@
         <!-- Layers Extension -->
         <script src="src/htmx-ext-layers.js"></script>
 
+        <!-- Notify Extension -->
+        <script src="../htmx-ext-notify/src/htmx-ext-notify.js"></script>
+
         <!-- Demo server: responds with the content of the <template url="..."> elements -->
         <script src="vendor/demo.htmx.org.js"></script>
 
@@ -226,6 +229,8 @@
                     <button
                         hx-post="/api/save-profile"
                         hx-layer="current"
+                        hx-notify="Profile saved"
+                        hx-notify-type="success"
                         class="btn btn-success"
                     >
                         💾 Save
@@ -268,8 +273,6 @@
                     ✏️ Edit
                 </button>
             </div>
-
-            <div class="toast alert alert-success">✅ Profile saved</div>
         </template>
 
         <template url="/api/settings" delay="200">
@@ -311,6 +314,8 @@
                 <button
                     hx-post="/api/save-settings"
                     hx-layer="current"
+                    hx-notify="Settings saved"
+                    hx-notify-type="success"
                     class="btn btn-success mt-4"
                 >
                     💾 Save Settings
@@ -357,13 +362,13 @@
                 <button
                     hx-post="/api/save-settings"
                     hx-layer="current"
+                    hx-notify="Settings saved"
+                    hx-notify-type="success"
                     class="btn btn-success mt-4"
                 >
                     💾 Save Settings
                 </button>
             </div>
-
-            <div class="toast alert alert-success">✅ Settings saved</div>
         </template>
 
         <template url="/api/list" delay="200">

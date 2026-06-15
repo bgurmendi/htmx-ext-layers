@@ -115,27 +115,6 @@ dialog[data-hx-layer].hx-layer-stacked {
     animation: rowFlash 1.5s ease;
 }
 
-@keyframes toastInOut {
-    0%,
-    100% {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-    10%,
-    80% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.toast {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    pointer-events: none;
-    animation: toastInOut 3s ease forwards;
-}
-
 /* While a request is in flight, htmx adds an `htmx-request` class to the
    element that triggered it (the button itself, by default). Hide its
    label and show a spinner so the user gets immediate feedback that the
