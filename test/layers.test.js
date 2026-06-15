@@ -10,7 +10,10 @@ let browser;
 before(async () => {
   server = await startServer();
   baseURL = `http://127.0.0.1:${server.address().port}`;
-  browser = await chromium.launch();
+  browser = await chromium.launch({
+    headless: process.env.HEADED !== "1",
+    slowMo: process.env.HEADED === "1" ? Number(process.env.SLOWMO ?? 1000) : undefined,
+  });
 });
 
 after(async () => {

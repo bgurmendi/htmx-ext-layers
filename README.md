@@ -187,7 +187,12 @@ End-to-end tests use [Playwright](https://playwright.dev) (via Node's built-in t
 
 The tests spin up a local static server for the repository and open the demo pages in headless Chromium — no manual server setup needed.
 
-To watch the tests run in a visible browser window (useful while debugging), edit `test/layers.test.js` and pass `{ headless: false }` to `chromium.launch()`.
+To watch the tests run in a visible browser window (useful while debugging), set `HEADED=1`. Each action is slowed down by 1 second by default; override with `SLOWMO` (milliseconds):
+
+```bash
+HEADED=1 npm test
+HEADED=1 SLOWMO=300 npm test
+```
 
 ## License
 
