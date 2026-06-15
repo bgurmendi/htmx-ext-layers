@@ -181,48 +181,50 @@
 
         <!-- Simulated responses for demo.htmx.org -->
         <template url="/api/edit-customer" delay="200">
-            <div class="dialog-header">
-                <h3>✏️ Edit customer #${id}</h3>
-                <button
-                    class="btn btn-square btn-sm btn-ghost"
-                    onclick="this.closest('dialog').close()"
-                >
-                    ✕
-                </button>
-            </div>
-            <div class="space-y-3">
-                <input type="hidden" name="id" value="${id}" />
-                <input type="hidden" name="tipo" value="${tipo}" />
-
-                <label><strong>Name:</strong></label>
-                <input type="text" name="nombre" value="${nombre}" class="input w-full" />
-
-                <label><strong>Email:</strong></label>
-                <input type="email" name="email" value="${email}" class="input w-full" />
-
-                <label><strong>Phone:</strong></label>
-                <input type="text" name="telefono" value="${telefono}" class="input w-full" />
-
-                <div
-                    class="grid grid-cols-2 gap-4 mt-4"
-                >
+            <div class="p-8">
+                <div class="dialog-header">
+                    <h3>✏️ Edit customer #${id}</h3>
                     <button
-                        hx-put="/api/save-customer"
-                        hx-layer="return"
-                        hx-swap="outerHTML"
-                        hx-include="closest [data-hx-layer-content]"
-                        hx-notify="Customer updated"
-                        hx-notify-type="success"
-                        class="btn btn-success"
-                    >
-                        💾 Save
-                    </button>
-                    <button
+                        class="btn btn-square btn-sm btn-ghost"
                         onclick="this.closest('dialog').close()"
-                        class="btn btn-error"
                     >
-                        ❌ Cancel
+                        ✕
                     </button>
+                </div>
+                <div class="space-y-3">
+                    <input type="hidden" name="id" value="${id}" />
+                    <input type="hidden" name="tipo" value="${tipo}" />
+
+                    <label><strong>Name:</strong></label>
+                    <input type="text" name="nombre" value="${nombre}" class="input w-full" />
+
+                    <label><strong>Email:</strong></label>
+                    <input type="email" name="email" value="${email}" class="input w-full" />
+
+                    <label><strong>Phone:</strong></label>
+                    <input type="text" name="telefono" value="${telefono}" class="input w-full" />
+
+                    <div
+                        class="grid grid-cols-2 gap-4 mt-4"
+                    >
+                        <button
+                            hx-put="/api/save-customer"
+                            hx-layer="return"
+                            hx-swap="outerHTML"
+                            hx-include="closest [data-hx-layer]"
+                            hx-notify="Customer updated"
+                            hx-notify-type="success"
+                            class="btn btn-success"
+                        >
+                            💾 Save
+                        </button>
+                        <button
+                            onclick="this.closest('dialog').close()"
+                            class="btn btn-error"
+                        >
+                            ❌ Cancel
+                        </button>
+                    </div>
                 </div>
             </div>
         </template>
@@ -264,189 +266,199 @@
         </template>
 
         <template url="/api/email-step1" delay="200">
-            <div class="dialog-header">
-                <h3>✉️ Send email — Step 1 of 3</h3>
-                <button
-                    class="btn btn-square btn-sm btn-ghost"
-                    onclick="this.closest('dialog').close()"
-                >
-                    ✕
-                </button>
-            </div>
-            <div class="space-y-3">
-                <p>
-                    Recipient: <strong>${nombre}</strong> (${email})
-                </p>
-
-                <input type="hidden" name="id" value="${id}" />
-                <input type="hidden" name="nombre" value="${nombre}" />
-                <input type="hidden" name="email" value="${email}" />
-
-                <label><strong>Template:</strong></label>
-                <select name="plantilla" class="select w-full">
-                    <option value="welcome">Welcome</option>
-                    <option value="promo">Promotion</option>
-                    <option value="reminder">Payment reminder</option>
-                </select>
-
-                <button
-                    hx-get="/api/email-step2"
-                    hx-layer="step"
-                    hx-include="closest [data-hx-layer-content]"
-                    class="btn btn-success mt-4"
-                >
-                    Next →
-                </button>
-            </div>
-        </template>
-
-        <template url="/api/email-step2" delay="200">
-            <div class="dialog-header">
-                <h3>✉️ Send email — Step 2 of 3</h3>
-                <button
-                    class="btn btn-square btn-sm btn-ghost"
-                    onclick="this.closest('dialog').close()"
-                >
-                    ✕
-                </button>
-            </div>
-            <div class="space-y-3">
-                <p>
-                    Template: <strong>${({welcome: 'Welcome', promo: 'Promotion', reminder: 'Payment reminder'})[plantilla] || plantilla}</strong>
-                </p>
-
-                <input type="hidden" name="id" value="${id}" />
-                <input type="hidden" name="nombre" value="${nombre}" />
-                <input type="hidden" name="email" value="${email}" />
-                <input type="hidden" name="plantilla" value="${plantilla}" />
-
-                <label><strong>Message:</strong></label>
-                <textarea name="texto" rows="5" class="textarea w-full">${({
-                    welcome: 'Hi ' + nombre + ', welcome aboard! We are happy to have you with us.',
-                    promo: 'Hi ' + nombre + ', check out our latest promotion just for you!',
-                    reminder: 'Hi ' + nombre + ', this is a friendly reminder about your pending payment.'
-                })[plantilla] || ''}</textarea>
-
-                <div
-                    class="grid grid-cols-2 gap-4 mt-4"
-                >
+            <div class="p-8">
+                <div class="dialog-header">
+                    <h3>✉️ Send email — Step 1 of 3</h3>
                     <button
-                        type="button"
-                        hx-layer-back
-                        class="btn btn-neutral"
+                        class="btn btn-square btn-sm btn-ghost"
+                        onclick="this.closest('dialog').close()"
                     >
-                        ← Back
+                        ✕
                     </button>
+                </div>
+                <div class="space-y-3">
+                    <p>
+                        Recipient: <strong>${nombre}</strong> (${email})
+                    </p>
+
+                    <input type="hidden" name="id" value="${id}" />
+                    <input type="hidden" name="nombre" value="${nombre}" />
+                    <input type="hidden" name="email" value="${email}" />
+
+                    <label><strong>Template:</strong></label>
+                    <select name="plantilla" class="select w-full">
+                        <option value="welcome">Welcome</option>
+                        <option value="promo">Promotion</option>
+                        <option value="reminder">Payment reminder</option>
+                    </select>
+
                     <button
-                        hx-post="/api/email-send"
-                        hx-layer="replace"
-                        hx-include="closest [data-hx-layer-content]"
-                        hx-notify="Email sent"
-                        hx-notify-type="success"
-                        class="btn btn-success"
+                        hx-get="/api/email-step2"
+                        hx-layer="step"
+                        hx-include="closest [data-hx-layer]"
+                        class="btn btn-success mt-4"
                     >
-                        📤 Send
+                        Next →
                     </button>
                 </div>
             </div>
         </template>
 
-        <template url="/api/email-send" delay="500">
-            <div class="dialog-header">
-                <h3>📤 Sending email…</h3>
-                <button
-                    class="btn btn-square btn-sm btn-ghost"
-                    onclick="this.closest('dialog').close()"
-                >
-                    ✕
-                </button>
-            </div>
-            <div class="space-y-3">
-                <p>📨 Connecting to mail server…</p>
-                <p>✉️ Sending to ${email}…</p>
-                <p>✅ Email sent to <strong>${nombre}</strong>.</p>
+        <template url="/api/email-step2" delay="200">
+            <div class="p-8">
+                <div class="dialog-header">
+                    <h3>✉️ Send email — Step 2 of 3</h3>
+                    <button
+                        class="btn btn-square btn-sm btn-ghost"
+                        onclick="this.closest('dialog').close()"
+                    >
+                        ✕
+                    </button>
+                </div>
+                <div class="space-y-3">
+                    <p>
+                        Template: <strong>${({welcome: 'Welcome', promo: 'Promotion', reminder: 'Payment reminder'})[plantilla] || plantilla}</strong>
+                    </p>
 
-                <button
-                    onclick="this.closest('dialog').close()"
-                    class="btn btn-success mt-4"
-                >
-                    Close
-                </button>
+                    <input type="hidden" name="id" value="${id}" />
+                    <input type="hidden" name="nombre" value="${nombre}" />
+                    <input type="hidden" name="email" value="${email}" />
+                    <input type="hidden" name="plantilla" value="${plantilla}" />
+
+                    <label><strong>Message:</strong></label>
+                    <textarea name="texto" rows="5" class="textarea w-full">${({
+                        welcome: 'Hi ' + nombre + ', welcome aboard! We are happy to have you with us.',
+                        promo: 'Hi ' + nombre + ', check out our latest promotion just for you!',
+                        reminder: 'Hi ' + nombre + ', this is a friendly reminder about your pending payment.'
+                    })[plantilla] || ''}</textarea>
+
+                    <div
+                        class="grid grid-cols-2 gap-4 mt-4"
+                    >
+                        <button
+                            type="button"
+                            hx-layer-back
+                            class="btn btn-neutral"
+                        >
+                            ← Back
+                        </button>
+                        <button
+                            hx-post="/api/email-send"
+                            hx-layer="replace"
+                            hx-include="closest [data-hx-layer]"
+                            hx-notify="Email sent"
+                            hx-notify-type="success"
+                            class="btn btn-success"
+                        >
+                            📤 Send
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template url="/api/email-send" delay="500">
+            <div class="p-8">
+                <div class="dialog-header">
+                    <h3>📤 Sending email…</h3>
+                    <button
+                        class="btn btn-square btn-sm btn-ghost"
+                        onclick="this.closest('dialog').close()"
+                    >
+                        ✕
+                    </button>
+                </div>
+                <div class="space-y-3">
+                    <p>📨 Connecting to mail server…</p>
+                    <p>✉️ Sending to ${email}…</p>
+                    <p>✅ Email sent to <strong>${nombre}</strong>.</p>
+
+                    <button
+                        onclick="this.closest('dialog').close()"
+                        class="btn btn-success mt-4"
+                    >
+                        Close
+                    </button>
+                </div>
             </div>
         </template>
 
         <template url="/api/new-customer-step1" delay="200">
-            <div class="dialog-header">
-                <h3>➕ New customer — Step 1 of 2</h3>
-                <button
-                    class="btn btn-square btn-sm btn-ghost"
-                    onclick="this.closest('dialog').close()"
-                >
-                    ✕
-                </button>
-            </div>
-            <div class="space-y-3">
-                <label><strong>Customer type:</strong></label>
-                <select name="tipo" id="new-customer-tipo" class="select w-full">
-                    <option value="person">Person</option>
-                    <option value="company">Company</option>
-                </select>
+            <div class="p-8">
+                <div class="dialog-header">
+                    <h3>➕ New customer — Step 1 of 2</h3>
+                    <button
+                        class="btn btn-square btn-sm btn-ghost"
+                        onclick="this.closest('dialog').close()"
+                    >
+                        ✕
+                    </button>
+                </div>
+                <div class="space-y-3">
+                    <label><strong>Customer type:</strong></label>
+                    <select name="tipo" id="new-customer-tipo" class="select w-full">
+                        <option value="person">Person</option>
+                        <option value="company">Company</option>
+                    </select>
 
-                <button
-                    hx-get="/api/new-customer-step2"
-                    hx-layer="step"
-                    hx-include="#new-customer-tipo"
-                    class="btn btn-success mt-4"
-                >
-                    Next →
-                </button>
+                    <button
+                        hx-get="/api/new-customer-step2"
+                        hx-layer="step"
+                        hx-include="#new-customer-tipo"
+                        class="btn btn-success mt-4"
+                    >
+                        Next →
+                    </button>
+                </div>
             </div>
         </template>
 
         <template url="/api/new-customer-step2" delay="200">
-            <div class="dialog-header">
-                <h3>➕ New customer — Step 2 of 2</h3>
-                <button
-                    class="btn btn-square btn-sm btn-ghost"
-                    onclick="this.closest('dialog').close()"
-                >
-                    ✕
-                </button>
-            </div>
-            <div class="space-y-3">
-                <input type="hidden" name="tipo" value="${tipo}" />
-
-                ${tipo === 'company'
-                    ? '<label><strong>Company name:</strong></label><input type="text" name="nombre" placeholder="Company name" class="input w-full" />'
-                    : '<label><strong>Full name:</strong></label><input type="text" name="nombre" placeholder="Full name" class="input w-full" />'}
-
-                <label><strong>Email:</strong></label>
-                <input type="email" name="email" placeholder="email@example.com" class="input w-full" />
-
-                <label><strong>Phone:</strong></label>
-                <input type="text" name="telefono" placeholder="600111222" class="input w-full" />
-
-                <div
-                    class="grid grid-cols-2 gap-4 mt-4"
-                >
+            <div class="p-8">
+                <div class="dialog-header">
+                    <h3>➕ New customer — Step 2 of 2</h3>
                     <button
-                        type="button"
-                        hx-layer-back
-                        class="btn btn-neutral"
+                        class="btn btn-square btn-sm btn-ghost"
+                        onclick="this.closest('dialog').close()"
                     >
-                        ← Back
+                        ✕
                     </button>
-                    <button
-                        hx-post="/api/new-customer-create"
-                        hx-layer="return"
-                        hx-swap="outerHTML"
-                        hx-include="closest [data-hx-layer-content]"
-                        hx-notify="Customer created"
-                        hx-notify-type="success"
-                        class="btn btn-success"
+                </div>
+                <div class="space-y-3">
+                    <input type="hidden" name="tipo" value="${tipo}" />
+
+                    ${tipo === 'company'
+                        ? '<label><strong>Company name:</strong></label><input type="text" name="nombre" placeholder="Company name" class="input w-full" />'
+                        : '<label><strong>Full name:</strong></label><input type="text" name="nombre" placeholder="Full name" class="input w-full" />'}
+
+                    <label><strong>Email:</strong></label>
+                    <input type="email" name="email" placeholder="email@example.com" class="input w-full" />
+
+                    <label><strong>Phone:</strong></label>
+                    <input type="text" name="telefono" placeholder="600111222" class="input w-full" />
+
+                    <div
+                        class="grid grid-cols-2 gap-4 mt-4"
                     >
-                        ✅ Accept
-                    </button>
+                        <button
+                            type="button"
+                            hx-layer-back
+                            class="btn btn-neutral"
+                        >
+                            ← Back
+                        </button>
+                        <button
+                            hx-post="/api/new-customer-create"
+                            hx-layer="return"
+                            hx-swap="outerHTML"
+                            hx-include="closest [data-hx-layer]"
+                            hx-notify="Customer created"
+                            hx-notify-type="success"
+                            class="btn btn-success"
+                        >
+                            ✅ Accept
+                        </button>
+                    </div>
                 </div>
             </div>
         </template>

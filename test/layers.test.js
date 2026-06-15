@@ -56,14 +56,14 @@ test("hx-layer=\"new\" opens a <dialog> and swaps the response into it (not into
 
   assert.strictEqual(await dialog.count(), 1, "exactly one open layer dialog");
   assert.strictEqual(
-    await button.locator("[data-hx-layer-content]").count(),
+    await button.locator("h3").count(),
     0,
     "response must not be swapped into the triggering button",
   );
   assert.strictEqual(
-    await dialog.locator("[data-hx-layer-content] h3").count(),
+    await dialog.locator("h3").count(),
     1,
-    "response content must be inside the dialog's layer-content element",
+    "response content must be inside the dialog",
   );
 
   await closePage(page);
@@ -172,7 +172,7 @@ test("hx-layer=\"current\" swaps the response into the currently open layer inst
   await dialog.locator('button:has-text("Edit")').click();
 
   await assert.doesNotReject(
-    dialog.locator("[data-hx-layer-content]:has-text('Edit Profile')").waitFor({ timeout: 2000 }),
+    dialog.getByText("Edit Profile").waitFor({ timeout: 2000 }),
   );
   await shoot(page, t.name, "current-updated");
 
@@ -293,7 +293,7 @@ test("hx-layer-back on an <a> inside a layer with no previous step closes the la
     a.href = "#";
     a.id = "back-link";
     a.textContent = "Back";
-    el.querySelector("[data-hx-layer-content]").appendChild(a);
+    el.appendChild(a);
   });
 
   await dialog.locator("#back-link").click();
@@ -328,8 +328,9 @@ test("CRUD demo: editing a row and saving (hx-layer=\"return\") swaps the result
 
   assert.match(await row.innerText(), /Ana García Updated/);
   assert.strictEqual(
-    await row.locator('button:has-text("Edit")').locator("[data-hx-layer-content]").count(),
+    await page.locator("dialog[data-hx-layer]").count(),
     0,
+    "dialog must be removed after returning",
   );
 
   await closePage(page);

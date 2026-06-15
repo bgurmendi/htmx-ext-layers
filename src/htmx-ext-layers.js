@@ -186,7 +186,8 @@ function beforeSwap(event) {
 
     console.debug("[layers] created dialog layer", dialog);
 
-    event.detail.target = getLayerContent(dialog);
+    event.detail.target = dialog;
+    event.detail.swapOverride = "innerHTML";
 
     console.debug("[layers] new swap target:", event.detail.target);
 
@@ -213,7 +214,8 @@ function beforeSwap(event) {
 
     console.debug("[layers] created step layer", dialog, { previousStep });
 
-    event.detail.target = getLayerContent(dialog);
+    event.detail.target = dialog;
+    event.detail.swapOverride = "innerHTML";
 
     console.debug("[layers] step swap target:", event.detail.target);
 
@@ -249,7 +251,8 @@ function beforeSwap(event) {
       previousLayer,
     });
 
-    event.detail.target = getLayerContent(dialog);
+    event.detail.target = dialog;
+    event.detail.swapOverride = "innerHTML";
 
     console.debug("[layers] replace swap target:", event.detail.target);
 
@@ -333,7 +336,6 @@ function createLayer({ returnTarget, parentLayer, previousStep }) {
   const dialog = document.createElement("dialog");
 
   dialog.dataset.hxLayer = "";
-  dialog.innerHTML = `<div data-hx-layer-content></div>`;
 
   dialog._hxReturnTarget = returnTarget;
   dialog._hxParentLayer = parentLayer || null;
@@ -406,11 +408,7 @@ function resolveLayerTarget(event, layer) {
     );
   }
 
-  return getLayerContent(layer);
-}
-
-function getLayerContent(layer) {
-  return layer.querySelector("[data-hx-layer-content]");
+  return layer;
 }
 
 function getCurrentLayer(elt) {

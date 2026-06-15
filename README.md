@@ -56,7 +56,16 @@ Enable the extension on `<body>` (or any ancestor element) using `hx-ext="layers
 </button>
 ```
 
-The response is swapped into a freshly created `<dialog>` element, which is shown using `dialog.show()`.
+The response replaces the `innerHTML` of a freshly created `<dialog>` element, which is then shown using `dialog.show()`. This happens regardless of any `hx-swap` on the triggering element or `HX-Reswap` header from the server — for `new`, `step` and `replace` the extension owns the dialog markup, so there is only one valid way to place content in it.
+
+The response is plain markup with no required wrapper element or attribute — its tag, classes and styling are entirely up to you, so it can match whatever CSS framework you're using. The extension only sets the dialog's background, text color and corner radius; spacing is up to the response, e.g. with a daisyUI/Tailwind padding utility:
+
+```html
+<div class="p-8">
+  <h3>My Profile</h3>
+  ...
+</div>
+```
 
 ### Update the current layer
 
@@ -69,6 +78,8 @@ Use `hx-layer="current"` from inside a layer to update its content in place:
 ```
 
 If no `hx-layer` attribute or `HX-Layer` header is present but the triggering element is inside an open layer, the extension defaults to `current` mode.
+
+By default this replaces the whole dialog's `innerHTML`, same as `hx-layer="new"`. To target a smaller part of the dialog instead, use a regular `hx-target` (resolved first within the dialog, then in the document) or have the server respond with `HX-Retarget`.
 
 ### Return content to the opener and close the layer
 
@@ -95,7 +106,7 @@ Use `hx-layer="step"` instead of `hx-layer="new"` to build a wizard where each s
 </button>
 ```
 
-When the response arrives, the new step opens in its own `<dialog>` and the current one is hidden (not destroyed) and chained as its "previous step". From the new step, a plain client-side button can go back without any request:
+As with `hx-layer="new"`, the response replaces the new dialog's `innerHTML`. When the response arrives, the new step opens in its own `<dialog>` and the current one is hidden (not destroyed) and chained as its "previous step". From the new step, a plain client-side button can go back without any request:
 
 ```html
 <!-- Step 2 -->
@@ -127,7 +138,7 @@ Use `hx-layer="replace"` to close the current layer (and any steps chained to it
 </button>
 ```
 
-The current dialog (and its chain of previous steps, if any) is closed and removed, and the response opens in a new dialog. The new dialog inherits the original opener as its return target, so a later `hx-layer="return"` from it still swaps its result back into the element that started the chain.
+The current dialog (and its chain of previous steps, if any) is closed and removed, and the response (again, an `innerHTML` swap of a fresh dialog) opens in a new dialog. The new dialog inherits the original opener as its return target, so a later `hx-layer="return"` from it still swaps its result back into the element that started the chain.
 
 ### Server-driven behavior
 
