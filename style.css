@@ -10,6 +10,8 @@ dialog[data-hx-layer] {
     border: none;
     border-radius: var(--radius-box);
     padding: 0;
+    background: var(--color-base-100);
+    color: var(--color-base-content);
     box-shadow: var(--shadow-lg, 0 20px 60px rgba(0, 0, 0, 0.3));
     position: fixed;
     inset: auto;
@@ -78,14 +80,6 @@ dialog[data-hx-layer].hx-layer-stacked {
 
 .hx-layers-backdrop.hx-layer-backdrop-visible {
     opacity: 1;
-}
-
-[data-hx-layer-content] {
-    position: relative;
-    background: var(--color-base-100);
-    color: var(--color-base-content);
-    padding: 2rem;
-    border-radius: var(--radius-box);
 }
 
 /* Reusable header bar for the dialog templates used throughout the demos */
