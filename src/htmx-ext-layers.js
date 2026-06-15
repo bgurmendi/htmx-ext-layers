@@ -37,6 +37,7 @@ function onBackClick(event) {
     slideOut(layer, "hx-layer-offset-right", () => {
       layer.remove();
       cleanupSharedBackdrop();
+      updateInertness();
     });
     slideIn(previousStep, "hx-layer-offset-left");
     console.debug("[layers] went back to previous step", previousStep);
@@ -68,8 +69,10 @@ function slideIn(dialog, offsetClass) {
   dialog.classList.add("hx-layer-no-default-anim", offsetClass);
 
   if (!dialog.open) {
-    dialog.showModal();
+    dialog.show();
   }
+
+  updateInertness();
 
   // Force a layout pass so the offset position is applied before we
   // transition away from it.
@@ -179,9 +182,10 @@ function beforeSwap(event) {
     }
 
     ensureSharedBackdrop();
-    dialog.showModal();
+    dialog.show();
+    updateInertness();
 
-    console.debug("[layers] dialog.showModal() called, open =", dialog.open);
+    console.debug("[layers] dialog.show() called, open =", dialog.open);
     return;
   }
 
@@ -205,15 +209,17 @@ function beforeSwap(event) {
       slideOut(previousStep, "hx-layer-offset-left", () => {
         previousStep._hxStepHidden = true;
         previousStep.close();
+        updateInertness();
         console.debug("[layers] hid previous step", previousStep);
       });
 
       slideIn(dialog, "hx-layer-offset-right");
     } else {
-      dialog.showModal();
+      dialog.show();
+      updateInertness();
     }
 
-    console.debug("[layers] dialog.showModal() called, open =", dialog.open);
+    console.debug("[layers] dialog.show() called, open =", dialog.open);
     return;
   }
 
@@ -240,9 +246,10 @@ function beforeSwap(event) {
       console.debug("[layers] closed previous layer", previousLayer);
     }
 
-    dialog.showModal();
+    dialog.show();
+    updateInertness();
 
-    console.debug("[layers] dialog.showModal() called, open =", dialog.open);
+    console.debug("[layers] dialog.show() called, open =", dialog.open);
     return;
   }
 
@@ -349,6 +356,7 @@ function removeLayerChain(dialog) {
   }
 
   cleanupSharedBackdrop();
+  updateInertness();
 }
 
 function unstackParent(parentLayer) {
@@ -394,7 +402,23 @@ function getCurrentLayer(elt) {
 }
 
 function getTopLayer() {
-  return (
-    [...document.querySelectorAll("dialog[data-hx-layer][open]")].at(-1) || null
-  );
+  return getOpenLayers().at(-1) || null;
+}
+
+function getOpenLayers() {
+  return [...document.querySelectorAll("dialog[data-hx-layer][open]")];
+}
+
+// Since layers no longer use showModal(), they don't get native modal
+// behavior (focus trapping, blocking interaction with layers below). Mark
+// every open layer except the topmost one as inert so they can't be
+// interacted with, while leaving room for other elements (e.g. a
+// notifications layer) to sit above everything via z-index.
+function updateInertness() {
+  const layers = getOpenLayers();
+  const top = layers.at(-1) || null;
+
+  for (const layer of layers) {
+    layer.inert = layer !== top;
+  }
 }

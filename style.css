@@ -20,6 +20,7 @@ dialog[data-hx-layer] {
     max-height: 85vh;
     overflow: auto;
     transform: translate(-50%, -50%);
+    z-index: 1001;
     animation: slideIn 0.3s ease;
     transition:
         transform 0.25s ease,
@@ -69,6 +70,7 @@ dialog[data-hx-layer].hx-layer-stacked {
 .hx-layers-backdrop {
     position: fixed;
     inset: 0;
+    z-index: 1000;
     background: rgba(0, 0, 0, 0.5);
     opacity: 0;
     transition: opacity 0.3s ease;
