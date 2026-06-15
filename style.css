@@ -135,3 +135,33 @@ dialog[data-hx-layer].hx-layer-stacked {
     pointer-events: none;
     animation: toastInOut 3s ease forwards;
 }
+
+/* While a request is in flight, htmx adds an `htmx-request` class to the
+   element that triggered it (the button itself, by default). Hide its
+   label and show a spinner so the user gets immediate feedback that the
+   click registered. */
+.btn.htmx-request {
+    pointer-events: none;
+    color: transparent !important;
+    position: relative;
+}
+
+.btn.htmx-request::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1em;
+    height: 1em;
+    margin: -0.5em;
+    border: 2px solid var(--color-base-content);
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: btn-spin 0.6s linear infinite;
+}
+
+@keyframes btn-spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
