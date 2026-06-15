@@ -213,6 +213,98 @@ test("hx-layer=\"replace\" closes the current layer and opens the response in a 
   await closePage(page);
 });
 
+test("Escape key with no layer open is a no-op", async (t) => {
+  const page = await newPage(t.name);
+  await page.goto(`${baseURL}/htmx-layers-showcase.html`);
+  await disableAnimations(page);
+
+  await page.keyboard.press("Escape");
+
+  assert.strictEqual(await page.locator("dialog[data-hx-layer]").count(), 0);
+  assert.strictEqual(await page.locator(".hx-layers-backdrop").count(), 0);
+
+  await closePage(page);
+});
+
+test("pressing a non-Escape key does not close an open layer", async (t) => {
+  const page = await newPage(t.name);
+  await page.goto(`${baseURL}/htmx-layers-showcase.html`);
+  await disableAnimations(page);
+
+  await page.locator('button:has-text("Open Profile")').click();
+  const dialog = page.locator("dialog[data-hx-layer][open]");
+  await dialog.waitFor();
+
+  await page.keyboard.press("a");
+
+  assert.strictEqual(await dialog.count(), 1, "layer must stay open");
+
+  await closePage(page);
+});
+
+test("hx-layer=\"current\" with no open layer leaves the page without a new dialog", async (t) => {
+  const page = await newPage(t.name);
+  await page.goto(`${baseURL}/htmx-layers-showcase.html`);
+  await disableAnimations(page);
+
+  await page.locator('button:has-text("Update current layer")').click();
+
+  await assert.doesNotReject(
+    page.locator('button:has-text("Layer updated")').waitFor({ timeout: 2000 }),
+  );
+
+  assert.strictEqual(await page.locator("dialog[data-hx-layer]").count(), 0);
+
+  await closePage(page);
+});
+
+test("hx-layer-back on an element outside any layer is a no-op", async (t) => {
+  const page = await newPage(t.name);
+  await page.goto(`${baseURL}/htmx-layers-showcase.html`);
+  await disableAnimations(page);
+
+  await page.evaluate(() => {
+    const btn = document.createElement("button");
+    btn.setAttribute("hx-layer-back", "");
+    btn.id = "stray-back";
+    btn.textContent = "Back";
+    document.body.appendChild(btn);
+  });
+
+  await page.locator("#stray-back").click();
+
+  assert.strictEqual(await page.locator("dialog[data-hx-layer]").count(), 0);
+
+  await closePage(page);
+});
+
+test("hx-layer-back on an <a> inside a layer with no previous step closes the layer", async (t) => {
+  const page = await newPage(t.name);
+  await page.goto(`${baseURL}/htmx-layers-showcase.html`);
+  await disableAnimations(page);
+
+  await page.locator('button:has-text("Open Profile")').click();
+  const dialog = page.locator("dialog[data-hx-layer][open]");
+  await dialog.waitFor();
+
+  await dialog.evaluate((el) => {
+    const a = document.createElement("a");
+    a.setAttribute("hx-layer-back", "");
+    a.href = "#";
+    a.id = "back-link";
+    a.textContent = "Back";
+    el.querySelector("[data-hx-layer-content]").appendChild(a);
+  });
+
+  await dialog.locator("#back-link").click();
+
+  await assert.doesNotReject(
+    page.locator("dialog[data-hx-layer]").waitFor({ state: "detached", timeout: 2000 }),
+  );
+
+  await closePage(page);
+});
+
 test("CRUD demo: editing a row and saving (hx-layer=\"return\") swaps the result into the row, not the Edit button, and closes the dialog", async (t) => {
   const page = await newPage(t.name);
   await page.goto(`${baseURL}/htmx-layers-crud-demo.html`);
