@@ -8,6 +8,8 @@ on:
 jobs:
   playwright:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
 
@@ -28,3 +30,11 @@ jobs:
           name: test-artifacts
           path: test/artifacts/
           retention-days: 7
+
+      # Keeps badges/coverage.json (the README coverage badge) in sync.
+      # Only on pushes to main/develop, not on PRs from forks.
+      - if: success() && github.event_name == 'push'
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: update coverage badge"
+          file_pattern: badges/coverage.json

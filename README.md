@@ -2,6 +2,9 @@
 
 [Repository](https://github.com/bgurmendi/htmx-ext-layers) · [Online demo](https://bgurmendi.github.io/htmx-ext-layers/htmx-layers-showcase.html) . [Online CRUD App](https://bgurmendi.github.io/htmx-ext-layers/htmx-layers-crud-demo.html)
 
+[![Tests](https://github.com/bgurmendi/htmx-ext-layers/actions/workflows/test.yml/badge.svg)](https://github.com/bgurmendi/htmx-ext-layers/actions/workflows/test.yml)
+[![Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/bgurmendi/htmx-ext-layers/develop/badges/coverage.json)](#code-coverage)
+
 An [htmx](https://htmx.org) extension that adds **stacked dialog layers** to your application. Open content in a modal `<dialog>` "layer", stack layers on top of each other, update the current layer in place, or return a result from a layer back to the page that opened it — all driven declaratively from your HTML and/or server response headers.
 
 ## Features
