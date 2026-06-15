@@ -3,10 +3,12 @@ const assert = require("node:assert");
 const { chromium } = require("playwright");
 const { startServer } = require("./server");
 const { captureConsole, disableAnimations, shoot } = require("./artifacts");
+const { createCoverageReport, startCoverage, stopCoverage } = require("./coverage");
 
 let server;
 let baseURL;
 let browser;
+let mcr;
 
 before(async () => {
   server = await startServer();
@@ -15,11 +17,13 @@ before(async () => {
     headless: process.env.HEADED !== "1",
     slowMo: process.env.HEADED === "1" ? Number(process.env.SLOWMO ?? 1000) : undefined,
   });
+  mcr = createCoverageReport();
 });
 
 after(async () => {
   await browser.close();
   await new Promise((resolve) => server.close(resolve));
+  await mcr.generate();
 });
 
 async function newPage(testName) {
@@ -28,7 +32,13 @@ async function newPage(testName) {
   page.on("pageerror", (err) => {
     throw err;
   });
+  await startCoverage(page);
   return page;
+}
+
+async function closePage(page) {
+  await stopCoverage(page, mcr);
+  await page.close();
 }
 
 test("hx-layer=\"new\" opens a <dialog> and swaps the response into it (not into the button)", async (t) => {
@@ -56,7 +66,7 @@ test("hx-layer=\"new\" opens a <dialog> and swaps the response into it (not into
     "response content must be inside the dialog's layer-content element",
   );
 
-  await page.close();
+  await closePage(page);
 });
 
 test("Escape key closes the topmost layer and removes the shared backdrop", async (t) => {
@@ -78,7 +88,7 @@ test("Escape key closes the topmost layer and removes the shared backdrop", asyn
   );
   await shoot(page, t.name, "after-escape");
 
-  await page.close();
+  await closePage(page);
 });
 
 test("nested layers: opening a layer from within a layer stacks it and marks the parent inert", async (t) => {
@@ -118,7 +128,7 @@ test("nested layers: opening a layer from within a layer stacks it and marks the
   });
   await shoot(page, t.name, "back-to-parent");
 
-  await page.close();
+  await closePage(page);
 });
 
 test("step wizard: hx-layer=\"step\" chains steps and hx-layer-back returns with state preserved", async (t) => {
@@ -146,7 +156,7 @@ test("step wizard: hx-layer=\"step\" chains steps and hx-layer-back returns with
   await shoot(page, t.name, "back-to-step1");
   assert.strictEqual(await page.locator("#wizard-name").inputValue(), "Ada Lovelace");
 
-  await page.close();
+  await closePage(page);
 });
 
 test("CRUD demo: editing a row and saving (hx-layer=\"return\") swaps the result into the row, not the Edit button, and closes the dialog", async (t) => {
@@ -176,5 +186,5 @@ test("CRUD demo: editing a row and saving (hx-layer=\"return\") swaps the result
     0,
   );
 
-  await page.close();
+  await closePage(page);
 });
