@@ -3,6 +3,7 @@ console.debug("[layers] extension script loaded, registering with htmx");
 htmx.defineExtension("layers", {
   init() {
     document.addEventListener("click", onBackClick);
+    document.addEventListener("keydown", onEscapeKey);
   },
 
   onEvent(name, event) {
@@ -17,6 +18,21 @@ htmx.defineExtension("layers", {
     }
   },
 });
+
+// dialog.show() (unlike showModal()) doesn't get native modal behavior, so
+// the Escape key no longer closes the topmost layer on its own. Restore
+// that by closing it ourselves, which still triggers the regular "close"
+// event listener (and so the same chain cleanup as any other close).
+function onEscapeKey(event) {
+  if (event.key !== "Escape") return;
+
+  const layer = getTopLayer();
+  if (!layer) return;
+
+  event.preventDefault();
+  console.debug("[layers] Escape pressed, closing top layer", layer);
+  layer.close();
+}
 
 function onBackClick(event) {
   const elt = event.target.closest("[hx-layer-back]");

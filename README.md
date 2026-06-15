@@ -53,7 +53,7 @@ Enable the extension on `<body>` (or any ancestor element) using `hx-ext="layers
 </button>
 ```
 
-The response is swapped into a freshly created `<dialog>` element, which is shown using `dialog.showModal()`.
+The response is swapped into a freshly created `<dialog>` element, which is shown using `dialog.show()`.
 
 ### Update the current layer
 
@@ -169,7 +169,25 @@ A more applied example: a customers table where rows are edited in a dialog (`hx
 
 ## Browser support
 
-The extension relies on the native HTML [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) element and its `showModal()` / `close()` APIs, which are supported by all current major browsers.
+The extension relies on the native HTML [`<dialog>`](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/dialog) element and its `show()` / `close()` APIs, which are supported by all current major browsers.
+
+## Tests
+
+End-to-end tests use [Playwright](https://playwright.dev) (via Node's built-in test runner) to drive the demos in a real browser and check that layers, nesting, the step wizard, the Escape key and the CRUD flow all behave as documented above.
+
+1. Install dependencies (only needed once):
+   ```bash
+   npm install
+   npx playwright install chromium
+   ```
+2. Run the tests:
+   ```bash
+   npm test
+   ```
+
+The tests spin up a local static server for the repository and open the demo pages in headless Chromium — no manual server setup needed.
+
+To watch the tests run in a visible browser window (useful while debugging), edit `test/layers.test.js` and pass `{ headless: false }` to `chromium.launch()`.
 
 ## License
 

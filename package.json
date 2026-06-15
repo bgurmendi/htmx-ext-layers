@@ -15,6 +15,9 @@
     "modal",
     "layers"
   ],
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
   "license": "GPL-3.0",
   "homepage": "https://github.com/bgurmendi/htmx-ext-layers#readme",
   "repository": {
