@@ -2,7 +2,7 @@ const { test, before, after } = require("node:test");
 const assert = require("node:assert");
 const { chromium } = require("playwright");
 const { startServer } = require("./server");
-const { captureConsole, shoot } = require("./artifacts");
+const { captureConsole, disableAnimations, shoot } = require("./artifacts");
 
 let server;
 let baseURL;
@@ -34,6 +34,7 @@ async function newPage(testName) {
 test("hx-layer=\"new\" opens a <dialog> and swaps the response into it (not into the button)", async (t) => {
   const page = await newPage(t.name);
   await page.goto(`${baseURL}/htmx-layers-showcase.html`);
+  await disableAnimations(page);
   await shoot(page, t.name, "before");
 
   const button = page.locator('button:has-text("Open Profile")');
@@ -62,6 +63,7 @@ test("Escape key closes the topmost layer and removes the shared backdrop", asyn
   const page = await newPage(t.name);
   await page.goto(`${baseURL}/htmx-layers-showcase.html`);
 
+  await disableAnimations(page);
   await page.locator('button:has-text("Open Profile")').click();
   await page.locator("dialog[data-hx-layer][open]").waitFor();
   await shoot(page, t.name, "dialog-open");
@@ -83,6 +85,7 @@ test("nested layers: opening a layer from within a layer stacks it and marks the
   const page = await newPage(t.name);
   await page.goto(`${baseURL}/htmx-layers-showcase.html`);
 
+  await disableAnimations(page);
   await page.locator('button:has-text("Main Form")').click();
   const parent = page.locator("dialog[data-hx-layer][open]").first();
   await parent.waitFor();
@@ -122,6 +125,7 @@ test("step wizard: hx-layer=\"step\" chains steps and hx-layer-back returns with
   const page = await newPage(t.name);
   await page.goto(`${baseURL}/htmx-layers-showcase.html`);
 
+  await disableAnimations(page);
   await page.locator('button:has-text("Start wizard")').click();
   await page.locator("dialog[data-hx-layer][open]").waitFor();
   await shoot(page, t.name, "step1");
@@ -149,6 +153,7 @@ test("CRUD demo: editing a row and saving (hx-layer=\"return\") swaps the result
   const page = await newPage(t.name);
   await page.goto(`${baseURL}/htmx-layers-crud-demo.html`);
 
+  await disableAnimations(page);
   const row = page.locator('tr[data-id="1"]');
   await row.locator('button:has-text("Edit")').click();
 
