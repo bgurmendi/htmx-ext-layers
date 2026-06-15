@@ -159,6 +159,60 @@ test("step wizard: hx-layer=\"step\" chains steps and hx-layer-back returns with
   await closePage(page);
 });
 
+test("hx-layer=\"current\" swaps the response into the currently open layer instead of opening a new one", async (t) => {
+  const page = await newPage(t.name);
+  await page.goto(`${baseURL}/htmx-layers-showcase.html`);
+
+  await disableAnimations(page);
+  await page.locator('button:has-text("Open Profile")').click();
+  const dialog = page.locator("dialog[data-hx-layer][open]");
+  await dialog.waitFor();
+  await shoot(page, t.name, "profile-open");
+
+  await dialog.locator('button:has-text("Edit")').click();
+
+  await assert.doesNotReject(
+    dialog.locator("[data-hx-layer-content]:has-text('Edit Profile')").waitFor({ timeout: 2000 }),
+  );
+  await shoot(page, t.name, "current-updated");
+
+  assert.strictEqual(
+    await page.locator("dialog[data-hx-layer][open]").count(),
+    1,
+    "no new layer must be opened",
+  );
+
+  await closePage(page);
+});
+
+test("hx-layer=\"replace\" closes the current layer and opens the response in a new one", async (t) => {
+  const page = await newPage(t.name);
+  await page.goto(`${baseURL}/htmx-layers-showcase.html`);
+
+  await disableAnimations(page);
+  await page.locator('button:has-text("Delete project")').click();
+  const confirmDialog = page.locator("dialog[data-hx-layer][open]:has-text('Confirm deletion')");
+  await confirmDialog.waitFor();
+  await shoot(page, t.name, "confirm-open");
+
+  await confirmDialog.locator('button:has-text("Delete")').click();
+
+  const processDialog = page.locator("dialog[data-hx-layer][open]:has-text('Deleting project')");
+  await assert.doesNotReject(processDialog.waitFor({ timeout: 2000 }));
+  await shoot(page, t.name, "replaced-open");
+
+  await assert.doesNotReject(
+    confirmDialog.waitFor({ state: "detached", timeout: 2000 }),
+  );
+  assert.strictEqual(
+    await page.locator("dialog[data-hx-layer][open]").count(),
+    1,
+    "the confirmation dialog must be replaced, not stacked",
+  );
+
+  await closePage(page);
+});
+
 test("CRUD demo: editing a row and saving (hx-layer=\"return\") swaps the result into the row, not the Edit button, and closes the dialog", async (t) => {
   const page = await newPage(t.name);
   await page.goto(`${baseURL}/htmx-layers-crud-demo.html`);
