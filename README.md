@@ -194,6 +194,8 @@ HEADED=1 npm test
 HEADED=1 SLOWMO=300 npm test
 ```
 
+Each run writes screenshots taken at key points (dialog opened, nested layer stacked, after Escape, wizard steps, CRUD save, ...) plus the page's console output to `test/artifacts/<test-name>/`. These are git-ignored, regenerated on every run, and are the quickest way to check what a test actually saw on screen.
+
 ## License
 
 [GPL-3.0](LICENSE). htmx itself is distributed under the BSD 2-Clause license, which is compatible with the GPL, so this extension can be used alongside htmx without licensing conflicts.
