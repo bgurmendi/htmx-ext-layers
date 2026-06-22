@@ -2,6 +2,7 @@
 
 [Repository](https://github.com/bgurmendi/htmx-ext-layers) · [Online demo](https://bgurmendi.github.io/htmx-ext-layers/htmx-layers-showcase.html) . [Online CRUD App](https://bgurmendi.github.io/htmx-ext-layers/htmx-layers-crud-demo.html)
 
+[![npm](https://img.shields.io/npm/v/htmx-ext-layers)](https://www.npmjs.com/package/htmx-ext-layers)
 [![Tests](https://github.com/bgurmendi/htmx-ext-layers/actions/workflows/test.yml/badge.svg)](https://github.com/bgurmendi/htmx-ext-layers/actions/workflows/test.yml)
 [![Coverage](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/bgurmendi/htmx-ext-layers/develop/badges/coverage.json)](#code-coverage)
 
