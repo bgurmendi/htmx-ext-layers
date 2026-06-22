@@ -28,8 +28,8 @@ The extension is a single, dependency-free JavaScript file (besides htmx itself)
 Include htmx, then include the extension script after it, and enable it on the page (or a parent element) with `hx-ext="layers"`:
 
 ```html
-<script src="https://unpkg.com/htmx.org@1.9.10"></script>
-<script src="https://unpkg.com/htmx-ext-layers/src/htmx-ext-layers.js"></script>
+<script src="https://unpkg.com/htmx.org@2"></script>
+<script src="https://unpkg.com/htmx-ext-layers@0.2"></script>
 
 <body hx-ext="layers">
   ...
