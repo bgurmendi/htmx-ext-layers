@@ -147,21 +147,13 @@ Instead of (or in addition to) `hx-layer`, the server can respond with the `HX-L
 
 ## Demos
 
-Two self-contained demos are included. Both use [demo.htmx.org](https://demo.htmx.org) (loaded from [`vendor/demo.htmx.org.js`](vendor/demo.htmx.org.js)) to simulate server responses based on the `<template url="...">` blocks defined at the bottom of each page — no backend required.
+Two self-contained demos are included. Both use [demo.htmx.org](https://demo.htmx.org) (loaded from [`vendor/demo.htmx.org.js`](vendor/demo.htmx.org.js)) to simulate server responses based on the `<template url="...">` blocks defined at the bottom of each page — no backend required. Just open the HTML files directly in your browser.
 
-To run either locally:
-
-1. Serve the repository root with any static file server, for example:
-   ```bash
-   npx serve .
-   # or
-   python3 -m http.server
-   ```
-2. Open `http://localhost:<port>/<file>.html` in your browser (see below for each demo's file name).
+Both demos also use [htmx-ext-toast](https://github.com/bgurmendi/htmx-ext-toast) to show toast notifications on successful actions — the two extensions are fully compatible and work together out of the box.
 
 ### Feature showcase
 
-[`htmx-layers-showcase.html`](htmx-layers-showcase.html) — try it online: https://bgurmendi.github.io/htmx-ext-layers/htmx-layers-showcase.html
+[`htmx-layers-showcase.html`](htmx-layers-showcase.html) — [try it online](https://bgurmendi.github.io/htmx-ext-layers/htmx-layers-showcase.html)
 
 This demo showcases:
 
@@ -174,7 +166,7 @@ This demo showcases:
 
 ### CRUD demo
 
-[`htmx-layers-crud-demo.html`](htmx-layers-crud-demo.html) — try it online: https://bgurmendi.github.io/htmx-ext-layers/htmx-layers-crud-demo.html
+[`htmx-layers-crud-demo.html`](htmx-layers-crud-demo.html) — [try it online](https://bgurmendi.github.io/htmx-ext-layers/htmx-layers-crud-demo.html)
 
 A more applied example: a customers table where rows are edited in a dialog (`hx-layer="new"` + `hx-layer="return"`, targeting the row itself), and per-row actions open multi-step wizards built with `hx-layer="step"`, `hx-layer-back`, and `hx-layer="replace"`. This demo shows:
 
