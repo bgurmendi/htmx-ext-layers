@@ -8,7 +8,7 @@
         <link href="https://cdn.jsdelivr.net/npm/daisyui@5" rel="stylesheet" type="text/css" />
         <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
     </head>
-    <body hx-ext="layers, notify" class="bg-base-200 min-h-screen p-8">
+    <body hx-ext="layers, toast" class="bg-base-200 min-h-screen p-8">
         <div class="max-w-3xl mx-auto space-y-6">
             <h1 class="text-2xl font-bold text-center">🎨 HTMX Layers Extension Showcase</h1>
 
@@ -145,8 +145,8 @@
         <!-- Layers Extension -->
         <script src="src/htmx-ext-layers.js"></script>
 
-        <!-- Notify Extension -->
-        <script src="../htmx-ext-notify/src/htmx-ext-notify.js"></script>
+        <!-- Toast Extension -->
+        <script src="https://unpkg.com/htmx-ext-toast@0.1.0/src/htmx-ext-toast.js"></script>
 
         <!-- Demo server: responds with the content of the <template url="..."> elements -->
         <script src="vendor/demo.htmx.org.js"></script>
@@ -232,8 +232,8 @@
                         <button
                             hx-post="/api/save-profile"
                             hx-layer="current"
-                            hx-notify="Profile saved"
-                            hx-notify-type="success"
+                            hx-toast="Profile saved"
+                            hx-toast-type="success"
                             class="btn btn-success"
                         >
                             💾 Save
@@ -321,8 +321,8 @@
                     <button
                         hx-post="/api/save-settings"
                         hx-layer="current"
-                        hx-notify="Settings saved"
-                        hx-notify-type="success"
+                        hx-toast="Settings saved"
+                        hx-toast-type="success"
                         class="btn btn-success mt-4"
                     >
                         💾 Save Settings
@@ -371,8 +371,8 @@
                     <button
                         hx-post="/api/save-settings"
                         hx-layer="current"
-                        hx-notify="Settings saved"
-                        hx-notify-type="success"
+                        hx-toast="Settings saved"
+                        hx-toast-type="success"
                         class="btn btn-success mt-4"
                     >
                         💾 Save Settings
