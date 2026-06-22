@@ -1,6 +1,6 @@
 {
   "name": "htmx-ext-layers",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "An htmx extension that adds stacked dialog layers to your application.",
   "main": "src/htmx-ext-layers.js",
   "files": [
@@ -27,10 +27,8 @@
   "bugs": {
     "url": "https://github.com/bgurmendi/htmx-ext-layers/issues"
   },
-  "dependencies": {
-    "playwright": "^1.60.0"
-  },
   "devDependencies": {
-    "monocart-coverage-reports": "^2.12.12"
+    "monocart-coverage-reports": "^2.12.12",
+    "playwright": "^1.60.0"
   }
 }
