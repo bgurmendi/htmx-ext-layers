@@ -53,11 +53,35 @@
     });
   }
 
+  // mock-requests fires xhr.onload twice per response (direct call +
+  // dispatchEvent). Wrap XMLHttpRequest so the second call is dropped.
+  function guardAgainstDoubleOnload() {
+    var _XHR = XMLHttpRequest;
+    window.XMLHttpRequest = function () {
+      var xhr = new _XHR();
+      var _origSend = xhr.send;
+      xhr.send = function (body) {
+        var _realOnload = xhr.onload;
+        if (_realOnload) {
+          var _fired = false;
+          xhr.onload = function () {
+            if (_fired) return;
+            _fired = true;
+            return _realOnload.apply(this, arguments);
+          };
+        }
+        return _origSend.call(xhr, body);
+      };
+      return xhr;
+    };
+  }
+
   function initMockRequests() {
     if (typeof MockRequests === "undefined") {
       // console.log("Not defined yet");
       setTimeout(initMockRequests, 20);
     } else {
+      guardAgainstDoubleOnload();
       log(
         "demo:mock-request-loaded",
         "mock-request library loaded, mocking requests and loading htmx & hyperscript",
